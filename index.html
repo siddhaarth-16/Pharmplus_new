@@ -1,678 +1,986 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
-  <title>PharmaCare · modern pharmacy</title>
-  <!-- FontAwesome (free icons) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PharmaCare · Auth with OTP</title>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: #f5f9fc;
+            color: #1a2e3b;
+            line-height: 1.5;
+        }
+        .app {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem 3rem;
+        }
+        /* navbar */
+        .navbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            box-shadow: 0 8px 20px rgba(0, 40, 60, 0.06);
+            margin-bottom: 2rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: 600;
+            font-size: 1.6rem;
+            color: #0b5e7c;
+        }
+        .logo i { color: #2b9c7c; font-size: 1.8rem; }
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            font-weight: 500;
+            color: #1f4a5e;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #1f4a5e;
+            transition: 0.2s;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            cursor: pointer;
+        }
+        .nav-links a:hover { color: #1f8a7a; }
+        .nav-links .cart-badge {
+            background: #1f8a7a;
+            color: white;
+            border-radius: 20px;
+            padding: 0.1rem 0.6rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .nav-actions {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+        .nav-actions .btn-outline {
+            background: transparent;
+            border: 1.5px solid #c7dfe9;
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            font-weight: 500;
+            color: #1a4b5e;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .nav-actions .btn-outline:hover { background: #eaf3f7; }
+        .nav-actions .btn-primary {
+            background: #1f8a7a;
+            border: none;
+            padding: 0.4rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 500;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .nav-actions .btn-primary:hover { background: #167a68; }
+        /* search */
+        .search-section {
+            background: white;
+            border-radius: 60px;
+            padding: 0.3rem 0.3rem 0.3rem 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 16px rgba(0, 50, 70, 0.05);
+            margin-bottom: 2.2rem;
+            border: 1px solid #e1edf2;
+        }
+        .search-section i { color: #5c8b9c; font-size: 1.1rem; }
+        .search-section input {
+            border: none;
+            padding: 0.9rem 0.5rem;
+            font-size: 1rem;
+            width: 100%;
+            background: transparent;
+            outline: none;
+        }
+        .search-section input::placeholder { color: #9bb7c7; }
+        .search-section button {
+            background: #1f8a7a;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            border-radius: 40px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .search-section button:hover { background: #167a68; }
+        /* promo */
+        .promo-banner {
+            background: linear-gradient(135deg, #d9f0f0, #c3e2e8);
+            border-radius: 28px;
+            padding: 1.2rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2.5rem;
+            border-left: 6px solid #1f8a7a;
+        }
+        .promo-banner h3 {
+            font-weight: 600;
+            color: #094a5a;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .promo-banner h3 i { color: #cf5a2a; font-size: 1.6rem; }
+        .promo-banner .tag {
+            background: white;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #0b5a4a;
+            font-size: 0.9rem;
+        }
+        /* categories */
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 1.2rem;
+            margin-bottom: 2.2rem;
+            justify-content: center;
+        }
+        .category-item {
+            background: white;
+            padding: 0.45rem 1.3rem;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #1f4a5e;
+            box-shadow: 0 2px 8px rgba(0, 30, 40, 0.04);
+            border: 1px solid transparent;
+            transition: 0.2s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .category-item i { color: #2b9c7c; }
+        .category-item.active {
+            background: #e4f3f0;
+            border-color: #1f8a7a;
+            color: #075a4a;
+        }
+        .category-item:hover { background: #e4f3f0; }
+        /* product grid */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin: 2rem 0 1rem;
+        }
+        .section-title h2 {
+            font-weight: 600;
+            color: #133e4d;
+            font-size: 1.6rem;
+        }
+        .section-title span {
+            color: #3a7b8b;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        .section-title span:hover { text-decoration: underline; }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+        }
+        .product-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.2rem 0.8rem 1rem;
+            box-shadow: 0 6px 18px rgba(0, 40, 60, 0.04);
+            transition: 0.25s ease;
+            border: 1px solid #e8f0f3;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 28px rgba(20, 70, 90, 0.08);
+        }
+        .product-img {
+            background: #ebf5f9;
+            border-radius: 20px;
+            padding: 1rem 0.2rem;
+            text-align: center;
+            margin-bottom: 0.8rem;
+            font-size: 2.8rem;
+            color: #1f7a6a;
+        }
+        .product-name { font-weight: 600; font-size: 1rem; color: #1a3f4d; }
+        .product-meta {
+            font-size: 0.8rem;
+            color: #4d7b8b;
+            margin: 0.2rem 0 0.5rem;
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+        .product-meta i { margin-right: 3px; }
+        .product-price {
+            font-weight: 700;
+            color: #0b5e4e;
+            font-size: 1.2rem;
+            margin: 0.2rem 0 0.4rem;
+        }
+        .stock-badge {
+            font-size: 0.7rem;
+            background: #daf1e8;
+            color: #0a624a;
+            padding: 0.15rem 0.8rem;
+            border-radius: 40px;
+            align-self: flex-start;
+            margin-bottom: 0.5rem;
+        }
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.3rem;
+        }
+        .card-actions button {
+            background: #e7f3f0;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            color: #075a4a;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .card-actions button:hover { background: #cde6e0; }
+        .wishlist-icon {
+            color: #1f8a7a;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: 0.2s;
+        }
+        .wishlist-icon:hover { color: #cf5a2a; }
+        /* prescription */
+        .prescription-banner {
+            margin: 2.5rem 0 2rem;
+            background: white;
+            border-radius: 28px;
+            padding: 1.2rem 2rem;
+            border: 1px dashed #64b5a8;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            background: #f7fdfb;
+        }
+        .prescription-banner .left {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        .prescription-banner .left i { font-size: 2.2rem; color: #1f8a7a; }
+        .prescription-banner .left div { font-weight: 500; }
+        .prescription-banner .left small { color: #467a7a; display: block; }
+        .prescription-banner .btn-upload {
+            background: #1f8a7a;
+            border: none;
+            padding: 0.6rem 1.8rem;
+            border-radius: 40px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .prescription-banner .btn-upload:hover { background: #167a68; }
+        .footer-note {
+            margin-top: 3rem;
+            border-top: 1px solid #d2e4ea;
+            padding-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            color: #356c7a;
+            font-size: 0.9rem;
+        }
+        .footer-note i { color: #1f8a7a; margin-right: 6px; }
 
-    body {
-      background: #f5f9fc;
-      color: #1a2e3b;
-      line-height: 1.5;
-    }
+        /* ----- AUTH MODAL ----- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: white;
+            max-width: 420px;
+            width: 92%;
+            padding: 2rem 2rem 1.8rem;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            position: relative;
+        }
+        .modal-box .close-modal {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 1.4rem;
+            color: #8aaec0;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .modal-box .close-modal:hover { color: #1f4a5e; }
+        .modal-box h2 {
+            font-weight: 600;
+            color: #0b5e7c;
+            margin-bottom: 0.4rem;
+            font-size: 1.6rem;
+        }
+        .modal-box .sub {
+            color: #4d7b8b;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        .modal-box .form-group {
+            margin-bottom: 1rem;
+        }
+        .modal-box .form-group label {
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #1f4a5e;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+        .modal-box .form-group input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 40px;
+            border: 1px solid #d2e4ea;
+            font-size: 1rem;
+            background: #f8fbfc;
+            transition: 0.2s;
+        }
+        .modal-box .form-group input:focus {
+            border-color: #1f8a7a;
+            outline: none;
+            background: white;
+        }
+        .modal-box .form-row {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+        .modal-box .form-row input { flex: 1; }
+        .modal-box .btn-otp {
+            background: #e4f3f0;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #075a4a;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .modal-box .btn-otp:hover { background: #cde6e0; }
+        .modal-box .btn-submit {
+            width: 100%;
+            background: #1f8a7a;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.5rem;
+        }
+        .modal-box .btn-submit:hover { background: #167a68; }
+        .modal-box .auth-switch {
+            text-align: center;
+            margin-top: 1.2rem;
+            font-size: 0.9rem;
+            color: #4d7b8b;
+        }
+        .modal-box .auth-switch span {
+            color: #1f8a7a;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .modal-box .auth-switch span:hover { text-decoration: underline; }
+        .modal-box .forgot-link {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #1f8a7a;
+            cursor: pointer;
+            margin-top: -0.2rem;
+        }
+        .modal-box .forgot-link:hover { text-decoration: underline; }
+        .otp-section { display: none; }
+        .otp-section.active { display: block; }
+        .password-section { display: block; }
+        .password-section.hidden { display: none; }
+        .msg {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin: 0.5rem 0;
+            background: #daf1e8;
+            color: #075a4a;
+        }
+        .msg.error { background: #fce4e4; color: #b13e3e; }
 
-    .app {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 1rem 1.5rem 3rem;
-    }
-
-    /* header */
-    .navbar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      background: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 2rem;
-      box-shadow: 0 8px 20px rgba(0, 40, 60, 0.06);
-      margin-bottom: 2rem;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-weight: 600;
-      font-size: 1.6rem;
-      color: #0b5e7c;
-      letter-spacing: -0.5px;
-    }
-    .logo i {
-      color: #2b9c7c;
-      font-size: 1.8rem;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 1.8rem;
-      font-weight: 500;
-      color: #1f4a5e;
-    }
-    .nav-links a {
-      text-decoration: none;
-      color: #1f4a5e;
-      transition: 0.2s;
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-    .nav-links a:hover {
-      color: #1f8a7a;
-    }
-    .nav-links .cart-badge {
-      background: #1f8a7a;
-      color: white;
-      border-radius: 20px;
-      padding: 0.1rem 0.6rem;
-      font-size: 0.7rem;
-      font-weight: 600;
-      margin-left: 0.2rem;
-    }
-
-    .nav-actions {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-    .nav-actions .btn-outline {
-      background: transparent;
-      border: 1.5px solid #c7dfe9;
-      padding: 0.4rem 1rem;
-      border-radius: 30px;
-      font-weight: 500;
-      color: #1a4b5e;
-      transition: 0.2s;
-      cursor: default;
-    }
-    .nav-actions .btn-primary {
-      background: #1f8a7a;
-      border: none;
-      padding: 0.4rem 1.2rem;
-      border-radius: 30px;
-      font-weight: 500;
-      color: white;
-      transition: 0.2s;
-      cursor: default;
-    }
-
-    /* search */
-    .search-section {
-      background: white;
-      border-radius: 60px;
-      padding: 0.3rem 0.3rem 0.3rem 1.8rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 4px 16px rgba(0, 50, 70, 0.05);
-      margin-bottom: 2.2rem;
-      border: 1px solid #e1edf2;
-    }
-    .search-section i {
-      color: #5c8b9c;
-      font-size: 1.1rem;
-    }
-    .search-section input {
-      border: none;
-      padding: 0.9rem 0.5rem;
-      font-size: 1rem;
-      width: 100%;
-      background: transparent;
-      outline: none;
-    }
-    .search-section input::placeholder {
-      color: #9bb7c7;
-      font-weight: 400;
-    }
-    .search-section button {
-      background: #1f8a7a;
-      border: none;
-      padding: 0.7rem 1.8rem;
-      border-radius: 40px;
-      color: white;
-      font-weight: 500;
-      cursor: pointer;
-      transition: 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-    .search-section button:hover {
-      background: #167a68;
-    }
-
-    /* promo */
-    .promo-banner {
-      background: linear-gradient(135deg, #d9f0f0 0%, #c3e2e8 100%);
-      border-radius: 28px;
-      padding: 1.2rem 2rem;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 2.5rem;
-      border-left: 6px solid #1f8a7a;
-    }
-    .promo-banner h3 {
-      font-weight: 600;
-      color: #094a5a;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-    .promo-banner h3 i {
-      color: #cf5a2a;
-      font-size: 1.6rem;
-    }
-    .promo-banner .tag {
-      background: white;
-      padding: 0.3rem 1.2rem;
-      border-radius: 40px;
-      font-weight: 500;
-      color: #0b5a4a;
-      font-size: 0.9rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-    }
-
-    /* categories */
-    .categories {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem 1.2rem;
-      margin-bottom: 2.2rem;
-      justify-content: center;
-    }
-    .category-item {
-      background: white;
-      padding: 0.45rem 1.3rem;
-      border-radius: 40px;
-      font-weight: 500;
-      color: #1f4a5e;
-      box-shadow: 0 2px 8px rgba(0, 30, 40, 0.04);
-      border: 1px solid transparent;
-      transition: 0.2s;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-    .category-item i {
-      color: #2b9c7c;
-    }
-    .category-item.active {
-      background: #e4f3f0;
-      border-color: #1f8a7a;
-      color: #075a4a;
-    }
-    .category-item:hover {
-      background: #e4f3f0;
-    }
-
-    /* product grid */
-    .section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin: 2rem 0 1rem;
-    }
-    .section-title h2 {
-      font-weight: 600;
-      color: #133e4d;
-      font-size: 1.6rem;
-    }
-    .section-title span {
-      color: #3a7b8b;
-      font-weight: 500;
-      font-size: 0.95rem;
-      cursor: default;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .product-card {
-      background: white;
-      border-radius: 24px;
-      padding: 1.2rem 0.8rem 1rem;
-      box-shadow: 0 6px 18px rgba(0, 40, 60, 0.04);
-      transition: 0.25s ease;
-      border: 1px solid #e8f0f3;
-      display: flex;
-      flex-direction: column;
-    }
-    .product-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 14px 28px rgba(20, 70, 90, 0.08);
-    }
-    .product-img {
-      background: #ebf5f9;
-      border-radius: 20px;
-      padding: 1rem 0.2rem;
-      text-align: center;
-      margin-bottom: 0.8rem;
-      font-size: 2.8rem;
-      color: #1f7a6a;
-    }
-    .product-name {
-      font-weight: 600;
-      font-size: 1rem;
-      color: #1a3f4d;
-    }
-    .product-meta {
-      font-size: 0.8rem;
-      color: #4d7b8b;
-      margin: 0.2rem 0 0.5rem;
-      display: flex;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-    }
-    .product-meta i {
-      margin-right: 3px;
-    }
-    .product-price {
-      font-weight: 700;
-      color: #0b5e4e;
-      font-size: 1.2rem;
-      margin: 0.2rem 0 0.4rem;
-    }
-    .stock-badge {
-      font-size: 0.7rem;
-      background: #daf1e8;
-      color: #0a624a;
-      padding: 0.15rem 0.8rem;
-      border-radius: 40px;
-      align-self: flex-start;
-      margin-bottom: 0.5rem;
-    }
-    .card-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 0.3rem;
-    }
-    .card-actions button {
-      background: #e7f3f0;
-      border: none;
-      padding: 0.3rem 0.8rem;
-      border-radius: 30px;
-      color: #075a4a;
-      font-weight: 500;
-      cursor: pointer;
-      transition: 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-    .card-actions button:hover {
-      background: #cde6e0;
-    }
-    .card-actions .wishlist-icon {
-      color: #1f8a7a;
-      cursor: pointer;
-      font-size: 1.1rem;
-      transition: 0.2s;
-    }
-    .card-actions .wishlist-icon:hover {
-      color: #cf5a2a;
-    }
-
-    /* prescription */
-    .prescription-banner {
-      margin: 2.5rem 0 2rem;
-      background: white;
-      border-radius: 28px;
-      padding: 1.2rem 2rem;
-      border: 1px dashed #64b5a8;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      background: #f7fdfb;
-    }
-    .prescription-banner .left {
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-    }
-    .prescription-banner .left i {
-      font-size: 2.2rem;
-      color: #1f8a7a;
-    }
-    .prescription-banner .left div {
-      font-weight: 500;
-    }
-    .prescription-banner .left small {
-      color: #467a7a;
-      display: block;
-    }
-    .prescription-banner .btn-upload {
-      background: #1f8a7a;
-      border: none;
-      padding: 0.6rem 1.8rem;
-      border-radius: 40px;
-      color: white;
-      font-weight: 500;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .prescription-banner .btn-upload:hover {
-      background: #167a68;
-    }
-
-    /* footer */
-    .footer-note {
-      margin-top: 3rem;
-      border-top: 1px solid #d2e4ea;
-      padding-top: 2rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      color: #356c7a;
-      font-size: 0.9rem;
-    }
-    .footer-note i {
-      color: #1f8a7a;
-      margin-right: 6px;
-    }
-
-    /* responsive */
-    @media (max-width: 700px) {
-      .navbar {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.8rem;
-      }
-      .nav-links {
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 1rem;
-      }
-      .nav-actions {
-        justify-content: center;
-      }
-      .search-section {
-        flex-wrap: wrap;
-        background: white;
-        border-radius: 40px;
-        padding: 0.4rem 0.4rem;
-      }
-      .search-section input {
-        padding: 0.6rem 0.2rem;
-      }
-      .search-section button {
-        width: 100%;
-        justify-content: center;
-        margin-top: 0.2rem;
-      }
-      .promo-banner {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.8rem;
-      }
-    }
-  </style>
+        @media (max-width: 700px) {
+            .navbar { flex-direction: column; align-items: stretch; gap: 0.8rem; }
+            .nav-links { justify-content: center; flex-wrap: wrap; gap: 1rem; }
+            .nav-actions { justify-content: center; }
+            .search-section { flex-wrap: wrap; border-radius: 40px; padding: 0.4rem; }
+            .search-section input { padding: 0.6rem 0.2rem; }
+            .search-section button { width: 100%; justify-content: center; margin-top: 0.2rem; }
+            .promo-banner { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+            .modal-box { padding: 1.5rem; }
+        }
+    </style>
 </head>
 <body>
 <div class="app">
+    <!-- header -->
+    <header class="navbar">
+        <div class="logo"><i class="fas fa-capsules"></i> Pharma<span style="color:#1f8a7a;">Care</span></div>
+        <div class="nav-links">
+            <a href="#" id="navHome"><i class="fas fa-home"></i> Home</a>
+            <a href="#" id="navProducts"><i class="fas fa-prescription-bottle"></i> Products</a>
+            <a href="#" id="navPrescription"><i class="fas fa-upload"></i> Prescription</a>
+            <a href="#" id="navAdmin"><i class="fas fa-user-md"></i> Admin</a>
+            <a href="#" id="navCart"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-badge" id="cartCount">3</span></a>
+        </div>
+        <div class="nav-actions">
+            <span class="btn-outline" id="signInBtn"><i class="fas fa-user-circle"></i> Sign in</span>
+            <span class="btn-primary" id="joinBtn"><i class="fas fa-user-plus"></i> Join</span>
+        </div>
+    </header>
 
-  <!-- header -->
-  <header class="navbar">
-    <div class="logo">
-      <i class="fas fa-capsules"></i> Pharma<span style="color:#1f8a7a;">Care</span>
+    <!-- search, promo, categories, products (same as before) -->
+    <div class="search-section">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Search medicines, vitamins, personal care…" />
+        <button id="searchBtn"><i class="fas fa-arrow-right"></i> Search</button>
     </div>
-    <div class="nav-links">
-      <a href="#"><i class="fas fa-home"></i> Home</a>
-      <a href="#"><i class="fas fa-prescription-bottle"></i> Products</a>
-      <a href="#"><i class="fas fa-upload"></i> Prescription</a>
-      <a href="#"><i class="fas fa-user-md"></i> Admin</a>
-      <a href="#"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-badge" id="cartCount">3</span></a>
+    <div class="promo-banner">
+        <h3><i class="fas fa-tag"></i> Special offers & promotions</h3>
+        <span class="tag"><i class="fas fa-clock"></i> 20% off vitamins · ends soon</span>
+        <span class="tag"><i class="fas fa-gift"></i> Free delivery over $35</span>
     </div>
-    <div class="nav-actions">
-      <span class="btn-outline"><i class="fas fa-user-circle"></i> Sign in</span>
-      <span class="btn-primary"><i class="fas fa-user-plus"></i> Join</span>
+    <div class="categories" id="categoryContainer">
+        <span class="category-item active" data-category="all"><i class="fas fa-th-large"></i> All</span>
+        <span class="category-item" data-category="medicines"><i class="fas fa-pills"></i> Medicines</span>
+        <span class="category-item" data-category="vitamins"><i class="fas fa-vitamins"></i> Vitamins</span>
+        <span class="category-item" data-category="personal"><i class="fas fa-hand-sparkles"></i> Personal Care</span>
+        <span class="category-item" data-category="baby"><i class="fas fa-baby"></i> Baby Care</span>
+        <span class="category-item" data-category="devices"><i class="fas fa-stethoscope"></i> Medical Devices</span>
     </div>
-  </header>
-
-  <!-- search -->
-  <div class="search-section">
-    <i class="fas fa-search"></i>
-    <input type="text" id="searchInput" placeholder="Search medicines, vitamins, personal care…" />
-    <button id="searchBtn"><i class="fas fa-arrow-right"></i> Search</button>
-  </div>
-
-  <!-- special offers -->
-  <div class="promo-banner">
-    <h3><i class="fas fa-tag"></i> Special offers & promotions</h3>
-    <span class="tag"><i class="fas fa-clock"></i> 20% off vitamins · ends soon</span>
-    <span class="tag"><i class="fas fa-gift"></i> Free delivery over $35</span>
-  </div>
-
-  <!-- categories -->
-  <div class="categories" id="categoryContainer">
-    <span class="category-item active" data-category="all"><i class="fas fa-th-large"></i> All</span>
-    <span class="category-item" data-category="medicines"><i class="fas fa-pills"></i> Medicines</span>
-    <span class="category-item" data-category="vitamins"><i class="fas fa-vitamins"></i> Vitamins</span>
-    <span class="category-item" data-category="personal"><i class="fas fa-hand-sparkles"></i> Personal Care</span>
-    <span class="category-item" data-category="baby"><i class="fas fa-baby"></i> Baby Care</span>
-    <span class="category-item" data-category="devices"><i class="fas fa-stethoscope"></i> Medical Devices</span>
-  </div>
-
-  <!-- product grid -->
-  <div class="section-title">
-    <h2>⭐ Featured health products</h2>
-    <span>See all <i class="fas fa-arrow-right"></i></span>
-  </div>
-
-  <div class="product-grid" id="productGrid">
-    <!-- cards will be injected by JS -->
-  </div>
-
-  <!-- prescription upload -->
-  <div class="prescription-banner">
-    <div class="left">
-      <i class="fas fa-prescription"></i>
-      <div>
-        Upload prescription <small>Pharmacist review & approval</small>
-      </div>
+    <div class="section-title">
+        <h2>⭐ Featured health products</h2>
+        <span id="seeAllLink">See all <i class="fas fa-arrow-right"></i></span>
     </div>
-    <button class="btn-upload" id="prescriptionBtn"><i class="fas fa-cloud-upload-alt"></i> Upload Rx</button>
-  </div>
+    <div class="product-grid" id="productGrid"></div>
+    <div class="prescription-banner">
+        <div class="left">
+            <i class="fas fa-prescription"></i>
+            <div>Upload prescription <small>Pharmacist review & approval</small></div>
+        </div>
+        <button class="btn-upload" id="prescriptionBtn"><i class="fas fa-cloud-upload-alt"></i> Upload Rx</button>
+    </div>
+    <div class="footer-note">
+        <div><i class="fas fa-truck"></i> Home delivery · pickup available</div>
+        <div><i class="fas fa-map-pin"></i> Track order</div>
+        <div><i class="fas fa-user-cog"></i> Account · wishlist</div>
+        <div><i class="fas fa-credit-card"></i> Secure checkout</div>
+    </div>
+    <div style="margin-top:1.5rem;background:#e9f3f0;border-radius:40px;padding:0.8rem 1.5rem;display:flex;flex-wrap:wrap;justify-content:space-between;font-size:0.85rem;color:#145a4a;">
+        <span><i class="fas fa-check-circle" style="color:#1f8a7a;"></i> Order tracking · ready in 2h</span>
+        <span><i class="fas fa-file-prescription"></i> Prescription #RX-223 · approved</span>
+        <span><i class="fas fa-chart-simple"></i> Admin: 4 orders pending</span>
+    </div>
+    <div style="margin-top:1.8rem;font-size:0.75rem;color:#6b94a0;text-align:center;border-top:1px solid #d3e4ea;padding-top:1.5rem;">
+        <i class="fas fa-sync-alt"></i> Secure checkout · multiple payments · pharmacist review · order history · wishlist · sales reports
+    </div>
+</div>
 
-  <!-- footer -->
-  <div class="footer-note">
-    <div><i class="fas fa-truck"></i> Home delivery · pickup available</div>
-    <div><i class="fas fa-map-pin"></i> Track order</div>
-    <div><i class="fas fa-user-cog"></i> Account · wishlist</div>
-    <div><i class="fas fa-credit-card"></i> Secure checkout</div>
-  </div>
+<!-- ========== AUTH MODAL ========== -->
+<div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+        <button class="close-modal" id="closeModal"><i class="fas fa-times"></i></button>
+        <h2 id="modalTitle">Sign in</h2>
+        <div class="sub" id="modalSub">Enter your mobile number to continue</div>
 
-  <!-- mini status -->
-  <div style="margin-top: 1.5rem; background: #e9f3f0; border-radius: 40px; padding: 0.8rem 1.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; font-size: 0.85rem; color: #145a4a;">
-    <span><i class="fas fa-check-circle" style="color:#1f8a7a;"></i> Order tracking · ready in 2h</span>
-    <span><i class="fas fa-file-prescription"></i> Prescription #RX-223 · approved</span>
-    <span><i class="fas fa-chart-simple"></i> Admin: 4 orders pending</span>
-  </div>
+        <!-- Password Section (sign in) -->
+        <div class="password-section" id="passwordSection">
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="tel" id="loginMobile" placeholder="+91 98765 43210" />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter password" />
+            </div>
+            <div class="forgot-link" id="forgotLink">Forgot password?</div>
+            <button class="btn-submit" id="loginSubmit">Sign in</button>
+            <div class="auth-switch">
+                Don't have an account? <span id="switchToSignup">Join now</span>
+            </div>
+        </div>
 
-  <div style="margin-top: 1.8rem; font-size: 0.75rem; color: #6b94a0; text-align: center; border-top: 1px solid #d3e4ea; padding-top: 1.5rem;">
-    <i class="fas fa-sync-alt"></i> Secure checkout · multiple payments · pharmacist review · order history · wishlist · sales reports
-  </div>
+        <!-- OTP / Signup / Forgot section (dynamic) -->
+        <div class="otp-section" id="otpSection">
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="tel" id="otpMobile" placeholder="+91 98765 43210" />
+            </div>
+            <div class="form-row">
+                <input type="text" id="otpInput" placeholder="Enter OTP" />
+                <button class="btn-otp" id="sendOtpBtn">Send OTP</button>
+            </div>
+            <div id="otpMessage" class="msg" style="display:none;"></div>
+            <div class="form-group" style="margin-top:0.8rem;" id="newPasswordGroup" style="display:none;">
+                <label>New Password</label>
+                <input type="password" id="newPassword" placeholder="Set a password (min 6 chars)" />
+            </div>
+            <button class="btn-submit" id="otpSubmit">Verify & Continue</button>
+            <div class="auth-switch">
+                Already have an account? <span id="switchToLogin">Sign in</span>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-  (function() {
-    // ---------- PRODUCT DATA ----------
-    const products = [
-      { id: 1, name: 'Amoxicillin 500mg', category: 'medicines', price: 12.40, stock: true, icon: 'fa-capsules', meta: '20 caps · Rx' },
-      { id: 2, name: 'Vitamin D3 1000 IU', category: 'vitamins', price: 9.90, stock: true, icon: 'fa-tablets', meta: '90 softgels' },
-      { id: 3, name: 'CeraVe Moisturizer', category: 'personal', price: 16.25, stock: false, icon: 'fa-hand-cream', meta: '12 oz · unscented' },
-      { id: 4, name: 'First Aid Kit', category: 'devices', price: 24.50, stock: true, icon: 'fa-band-aid', meta: '100 pcs' },
-      { id: 5, name: 'Baby Vitamin D drops', category: 'baby', price: 8.20, stock: true, icon: 'fa-baby-carriage', meta: '10 ml' },
-      { id: 6, name: 'Blood Pressure Monitor', category: 'devices', price: 39.90, stock: true, icon: 'fa-heartbeat', meta: 'digital' },
-      { id: 7, name: 'Multivitamin + Iron', category: 'vitamins', price: 14.30, stock: true, icon: 'fa-vitamins', meta: '60 tablets' },
-      { id: 8, name: 'Baby Shampoo & Wash', category: 'baby', price: 7.50, stock: true, icon: 'fa-bath', meta: '12 oz' },
-    ];
+    (function() {
+        // ----- BACKEND SIMULATION (localStorage) -----
+        const DB_KEY = 'pharma_users';
+        let users = JSON.parse(localStorage.getItem(DB_KEY)) || [];
 
-    // DOM refs
-    const grid = document.getElementById('productGrid');
-    const categoryItems = document.querySelectorAll('.category-item');
-    const searchInput = document.getElementById('searchInput');
-    const searchBtn = document.getElementById('searchBtn');
-    const cartBadge = document.getElementById('cartCount');
-    let currentCategory = 'all';
-    let cartItems = 3; // initial demo count
+        function saveUsers() { localStorage.setItem(DB_KEY, JSON.stringify(users)); }
 
-    // ---------- RENDER ----------
-    function renderProducts(category = 'all', searchTerm = '') {
-      const term = searchTerm.toLowerCase().trim();
-      let filtered = products;
-
-      // category filter
-      if (category !== 'all') {
-        filtered = filtered.filter(p => p.category === category);
-      }
-
-      // search filter
-      if (term) {
-        filtered = filtered.filter(p => p.name.toLowerCase().includes(term));
-      }
-
-      if (filtered.length === 0) {
-        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:2rem; color:#4d7b8b;">No products found. Try a different search or category.</div>`;
-        return;
-      }
-
-      let html = '';
-      filtered.forEach(p => {
-        const stockLabel = p.stock 
-          ? '<i class="fas fa-check-circle"></i> In stock' 
-          : '<i class="fas fa-exclamation-triangle" style="color:#b57c1a;"></i> Low stock';
-        const stockClass = p.stock ? '' : 'style="background:#f9ece4; color:#a5643a;"';
-        html += `
-          <div class="product-card" data-id="${p.id}">
-            <div class="product-img"><i class="fas ${p.icon}"></i></div>
-            <div class="product-name">${p.name}</div>
-            <div class="product-meta"><i class="fas fa-flask"></i> ${p.meta}</div>
-            <div class="stock-badge" ${stockClass}>${stockLabel}</div>
-            <div class="product-price">$${p.price.toFixed(2)}</div>
-            <div class="card-actions">
-              <button class="add-to-cart" data-id="${p.id}"><i class="fas fa-cart-plus"></i> Add</button>
-              <i class="far fa-heart wishlist-icon" data-id="${p.id}"></i>
-            </div>
-          </div>
-        `;
-      });
-      grid.innerHTML = html;
-    }
-
-    // ---------- UPDATE CART BADGE ----------
-    function updateCartBadge() {
-      cartBadge.textContent = cartItems;
-    }
-
-    // ---------- EVENT HANDLERS ----------
-    // Category filter
-    categoryItems.forEach(item => {
-      item.addEventListener('click', function() {
-        categoryItems.forEach(c => c.classList.remove('active'));
-        this.classList.add('active');
-        currentCategory = this.dataset.category;
-        renderProducts(currentCategory, searchInput.value);
-      });
-    });
-
-    // Search
-    function performSearch() {
-      renderProducts(currentCategory, searchInput.value);
-    }
-
-    searchBtn.addEventListener('click', performSearch);
-    searchInput.addEventListener('keyup', (e) => {
-      if (e.key === 'Enter') performSearch();
-    });
-
-    // Add to cart (event delegation)
-    grid.addEventListener('click', function(e) {
-      const target = e.target.closest('.add-to-cart');
-      if (target) {
-        e.preventDefault();
-        const id = target.dataset.id;
-        const product = products.find(p => p.id == id);
-        if (product) {
-          cartItems++;
-          updateCartBadge();
-          // feedback
-          const original = target.innerHTML;
-          target.innerHTML = '<i class="fas fa-check"></i> Added';
-          target.style.background = '#daf1e8';
-          target.style.color = '#075a4a';
-          setTimeout(() => {
-            target.innerHTML = original;
-            target.style.background = '#e7f3f0';
-            target.style.color = '#075a4a';
-          }, 1200);
+        // Helper: find user by mobile
+        function findUser(mobile) {
+            return users.find(u => u.mobile === mobile);
         }
-      }
-    });
 
-    // Wishlist toggle (event delegation)
-    grid.addEventListener('click', function(e) {
-      const heart = e.target.closest('.wishlist-icon');
-      if (heart) {
-        e.preventDefault();
-        heart.classList.toggle('far');
-        heart.classList.toggle('fas');
-        if (heart.classList.contains('fas')) {
-          heart.style.color = '#cf5a2a';
-          // optional: show toast or something
-        } else {
-          heart.style.color = '#1f8a7a';
+        // Generate random OTP (4 digits)
+        function generateOTP() { return Math.floor(1000 + Math.random() * 9000).toString(); }
+
+        // ----- PRODUCT DATA (same) -----
+        const products = [
+            { id: 1, name: 'Amoxicillin 500mg', category: 'medicines', price: 12.40, stock: true, icon: 'fa-capsules', meta: '20 caps · Rx' },
+            { id: 2, name: 'Vitamin D3 1000 IU', category: 'vitamins', price: 9.90, stock: true, icon: 'fa-tablets', meta: '90 softgels' },
+            { id: 3, name: 'CeraVe Moisturizer', category: 'personal', price: 16.25, stock: false, icon: 'fa-hand-cream', meta: '12 oz · unscented' },
+            { id: 4, name: 'First Aid Kit', category: 'devices', price: 24.50, stock: true, icon: 'fa-band-aid', meta: '100 pcs' },
+            { id: 5, name: 'Baby Vitamin D drops', category: 'baby', price: 8.20, stock: true, icon: 'fa-baby-carriage', meta: '10 ml' },
+            { id: 6, name: 'Blood Pressure Monitor', category: 'devices', price: 39.90, stock: true, icon: 'fa-heartbeat', meta: 'digital' },
+            { id: 7, name: 'Multivitamin + Iron', category: 'vitamins', price: 14.30, stock: true, icon: 'fa-vitamins', meta: '60 tablets' },
+            { id: 8, name: 'Baby Shampoo & Wash', category: 'baby', price: 7.50, stock: true, icon: 'fa-bath', meta: '12 oz' },
+        ];
+
+        // DOM refs
+        const grid = document.getElementById('productGrid');
+        const categoryItems = document.querySelectorAll('.category-item');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const cartBadge = document.getElementById('cartCount');
+        let currentCategory = 'all';
+        let cartItems = 3;
+
+        // Auth state
+        let isLoggedIn = false;
+        let currentMobile = null;
+        let pendingOTP = null; // store OTP for verification
+        let authMode = 'login'; // 'login' | 'signup' | 'forgot'
+
+        // ----- RENDER PRODUCTS (same) -----
+        function renderProducts(category = 'all', searchTerm = '') {
+            const term = searchTerm.toLowerCase().trim();
+            let filtered = products;
+            if (category !== 'all') filtered = filtered.filter(p => p.category === category);
+            if (term) filtered = filtered.filter(p => p.name.toLowerCase().includes(term));
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:2rem;color:#4d7b8b;">No products found.</div>`;
+                return;
+            }
+            let html = '';
+            filtered.forEach(p => {
+                const stockLabel = p.stock ? '<i class="fas fa-check-circle"></i> In stock' : '<i class="fas fa-exclamation-triangle" style="color:#b57c1a;"></i> Low stock';
+                const stockStyle = p.stock ? '' : 'style="background:#f9ece4;color:#a5643a;"';
+                html += `
+                    <div class="product-card" data-id="${p.id}">
+                        <div class="product-img"><i class="fas ${p.icon}"></i></div>
+                        <div class="product-name">${p.name}</div>
+                        <div class="product-meta"><i class="fas fa-flask"></i> ${p.meta}</div>
+                        <div class="stock-badge" ${stockStyle}>${stockLabel}</div>
+                        <div class="product-price">$${p.price.toFixed(2)}</div>
+                        <div class="card-actions">
+                            <button class="add-to-cart" data-id="${p.id}"><i class="fas fa-cart-plus"></i> Add</button>
+                            <i class="far fa-heart wishlist-icon" data-id="${p.id}"></i>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
         }
-      }
-    });
 
-    // Prescription upload
-    document.getElementById('prescriptionBtn').addEventListener('click', function(e) {
-      e.preventDefault();
-      alert('📄 Prescription upload dialog (simulated). Pharmacist review will be notified.');
-    });
+        function updateCartBadge() { cartBadge.textContent = cartItems; }
 
-    // ---------- INIT ----------
-    renderProducts('all', '');
-    updateCartBadge();
+        // ----- AUTH UI UPDATE -----
+        function updateAuthUI() {
+            const signInBtn = document.getElementById('signInBtn');
+            const joinBtn = document.getElementById('joinBtn');
+            if (isLoggedIn) {
+                signInBtn.innerHTML = `<i class="fas fa-user-circle"></i> ${currentMobile || 'Account'}`;
+                signInBtn.style.background = '#e4f3f0';
+                signInBtn.style.borderColor = '#1f8a7a';
+                joinBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+                joinBtn.style.background = '#e74c3c';
+            } else {
+                signInBtn.innerHTML = '<i class="fas fa-user-circle"></i> Sign in';
+                signInBtn.style.background = 'transparent';
+                signInBtn.style.borderColor = '#c7dfe9';
+                joinBtn.innerHTML = '<i class="fas fa-user-plus"></i> Join';
+                joinBtn.style.background = '#1f8a7a';
+            }
+        }
 
-    // extra: category click on "All" if needed
-    // already active by default
+        // ----- MODAL CONTROLS -----
+        const modal = document.getElementById('authModal');
+        const closeModal = document.getElementById('closeModal');
+        const passwordSection = document.getElementById('passwordSection');
+        const otpSection = document.getElementById('otpSection');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSub = document.getElementById('modalSub');
 
-    console.log('PharmaCare · JS fully loaded. Features: search, categories, add to cart, wishlist, prescription.');
-  })();
+        function showModal(mode = 'login') {
+            authMode = mode;
+            modal.classList.add('active');
+            // Reset UI
+            passwordSection.classList.remove('hidden');
+            otpSection.classList.remove('active');
+            document.getElementById('otpMessage').style.display = 'none';
+            document.getElementById('newPasswordGroup').style.display = 'none';
+            document.getElementById('otpInput').value = '';
+            document.getElementById('otpMobile').value = '';
+            document.getElementById('loginMobile').value = '';
+            document.getElementById('loginPassword').value = '';
+            pendingOTP = null;
+
+            if (mode === 'login') {
+                modalTitle.textContent = 'Sign in';
+                modalSub.textContent = 'Enter your mobile & password';
+                passwordSection.classList.remove('hidden');
+                otpSection.classList.remove('active');
+                document.getElementById('loginSubmit').textContent = 'Sign in';
+                document.getElementById('switchToSignup').textContent = 'Join now';
+                document.getElementById('forgotLink').style.display = 'block';
+            } else if (mode === 'signup') {
+                modalTitle.textContent = 'Create Account';
+                modalSub.textContent = 'Verify your mobile with OTP';
+                passwordSection.classList.add('hidden');
+                otpSection.classList.add('active');
+                document.getElementById('otpSubmit').textContent = 'Create Account';
+                document.getElementById('switchToLogin').textContent = 'Sign in';
+                document.getElementById('newPasswordGroup').style.display = 'block';
+                document.getElementById('otpMessage').style.display = 'none';
+            } else if (mode === 'forgot') {
+                modalTitle.textContent = 'Reset Password';
+                modalSub.textContent = 'Verify your mobile with OTP';
+                passwordSection.classList.add('hidden');
+                otpSection.classList.add('active');
+                document.getElementById('otpSubmit').textContent = 'Reset Password';
+                document.getElementById('switchToLogin').textContent = 'Sign in';
+                document.getElementById('newPasswordGroup').style.display = 'block';
+                document.getElementById('otpMessage').style.display = 'none';
+            }
+        }
+
+        function hideModal() {
+            modal.classList.remove('active');
+        }
+
+        closeModal.addEventListener('click', hideModal);
+        modal.addEventListener('click', function(e) { if (e.target === modal) hideModal(); });
+
+        // ----- SWITCH BETWEEN LOGIN / SIGNUP -----
+        document.getElementById('switchToSignup').addEventListener('click', function() {
+            showModal('signup');
+        });
+        document.getElementById('switchToLogin').addEventListener('click', function() {
+            showModal('login');
+        });
+        document.getElementById('forgotLink').addEventListener('click', function() {
+            showModal('forgot');
+        });
+
+        // ----- SEND OTP -----
+        document.getElementById('sendOtpBtn').addEventListener('click', function() {
+            const mobile = document.getElementById('otpMobile').value.trim();
+            if (!mobile || mobile.length < 8) {
+                const msg = document.getElementById('otpMessage');
+                msg.textContent = 'Please enter a valid mobile number.';
+                msg.className = 'msg error';
+                msg.style.display = 'block';
+                return;
+            }
+            // Check if user exists (for signup, should not exist; for forgot, must exist)
+            const user = findUser(mobile);
+            if (authMode === 'signup' && user) {
+                const msg = document.getElementById('otpMessage');
+                msg.textContent = 'This mobile is already registered. Please sign in.';
+                msg.className = 'msg error';
+                msg.style.display = 'block';
+                return;
+            }
+            if (authMode === 'forgot' && !user) {
+                const msg = document.getElementById('otpMessage');
+                msg.textContent = 'No account found with this mobile.';
+                msg.className = 'msg error';
+                msg.style.display = 'block';
+                return;
+            }
+            // Generate & store OTP
+            pendingOTP = generateOTP();
+            const msg = document.getElementById('otpMessage');
+            msg.textContent = `✅ OTP sent to ${mobile}: ${pendingOTP} (demo)`;
+            msg.className = 'msg';
+            msg.style.display = 'block';
+            console.log(`[OTP] ${pendingOTP} for ${mobile}`);
+        });
+
+        // ----- OTP SUBMIT (verify & complete action) -----
+        document.getElementById('otpSubmit').addEventListener('click', function() {
+            const mobile = document.getElementById('otpMobile').value.trim();
+            const otp = document.getElementById('otpInput').value.trim();
+            const newPass = document.getElementById('newPassword').value.trim();
+            const msg = document.getElementById('otpMessage');
+
+            if (!mobile || mobile.length < 8) {
+                msg.textContent = 'Please enter a valid mobile number.';
+                msg.className = 'msg error';
+                msg.style.display = 'block';
+                return;
+            }
+            if (!otp) {
+                msg.textContent = 'Please enter the OTP.';
+                msg.className = 'msg error';
+                msg.style.display = 'block';
+                return;
+            }
+            if (otp !== pendingOTP) {
+                msg.textContent = '❌ Invalid OTP. Please try again.';
+                msg.className = 'msg error';
+                msg.style.display = 'block';
+                return;
+            }
+            if (authMode === 'signup' || authMode === 'forgot') {
+                if (newPass.length < 6) {
+                    msg.textContent = 'Password must be at least 6 characters.';
+                    msg.className = 'msg error';
+                    msg.style.display = 'block';
+                    return;
+                }
+            }
+
+            // --- action ---
+            if (authMode === 'signup') {
+                // create user
+                if (findUser(mobile)) {
+                    msg.textContent = 'User already exists. Please sign in.';
+                    msg.className = 'msg error';
+                    msg.style.display = 'block';
+                    return;
+                }
+                users.push({ mobile, password: newPass });
+                saveUsers();
+                isLoggedIn = true;
+                currentMobile = mobile;
+                updateAuthUI();
+                hideModal();
+                alert(`✅ Account created for ${mobile}!`);
+            } else if (authMode === 'forgot') {
+                const user = findUser(mobile);
+                if (!user) {
+                    msg.textContent = 'User not found.';
+                    msg.className = 'msg error';
+                    msg.style.display = 'block';
+                    return;
+                }
+                user.password = newPass;
+                saveUsers();
+                isLoggedIn = true;
+                currentMobile = mobile;
+                updateAuthUI();
+                hideModal();
+                alert(`✅ Password reset successfully for ${mobile}!`);
+            }
+        });
+
+        // ----- LOGIN (password) -----
+        document.getElementById('loginSubmit').addEventListener('click', function() {
+            const mobile = document.getElementById('loginMobile').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const msg = document.getElementById('otpMessage'); // reuse for error
+
+            if (!mobile || mobile.length < 8) {
+                alert('Please enter a valid mobile number.');
+                return;
+            }
+            if (!password) {
+                alert('Please enter your password.');
+                return;
+            }
+            const user = findUser(mobile);
+            if (!user) {
+                alert('❌ No account found with this mobile. Please join first.');
+                return;
+            }
+            if (user.password !== password) {
+                alert('❌ Incorrect password.');
+                return;
+            }
+            isLoggedIn = true;
+            currentMobile = mobile;
+            updateAuthUI();
+            hideModal();
+            alert(`✅ Welcome back, ${mobile}!`);
+        });
+
+        // ----- SIGN IN / JOIN BUTTONS (from navbar) -----
+        document.getElementById('signInBtn').addEventListener('click', function() {
+            if (isLoggedIn) {
+                alert(`👤 Logged in as ${currentMobile}`);
+                return;
+            }
+            showModal('login');
+        });
+
+        document.getElementById('joinBtn').addEventListener('click', function() {
+            if (isLoggedIn) {
+                // Logout
+                isLoggedIn = false;
+                currentMobile = null;
+                updateAuthUI();
+                alert('👋 Logged out successfully.');
+                return;
+            }
+            showModal('signup');
+        });
+
+        // ----- OTHER INTERACTIONS (products, search, etc) -----
+        // Category filter
+        categoryItems.forEach(item => {
+            item.addEventListener('click', function() {
+                categoryItems.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                currentCategory = this.dataset.category;
+                renderProducts(currentCategory, searchInput.value);
+            });
+        });
+
+        function performSearch() { renderProducts(currentCategory, searchInput.value); }
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') performSearch(); });
+
+        // Add to cart
+        grid.addEventListener('click', function(e) {
+            const target = e.target.closest('.add-to-cart');
+            if (target) {
+                e.preventDefault();
+                cartItems++;
+                updateCartBadge();
+                const original = target.innerHTML;
+                target.innerHTML = '<i class="fas fa-check"></i> Added';
+                target.style.background = '#daf1e8';
+                target.style.color = '#075a4a';
+                setTimeout(() => {
+                    target.innerHTML = original;
+                    target.style.background = '#e7f3f0';
+                    target.style.color = '#075a4a';
+                }, 1200);
+            }
+        });
+
+        // Wishlist
+        grid.addEventListener('click', function(e) {
+            const heart = e.target.closest('.wishlist-icon');
+            if (heart) {
+                e.preventDefault();
+                heart.classList.toggle('far');
+                heart.classList.toggle('fas');
+                heart.style.color = heart.classList.contains('fas') ? '#cf5a2a' : '#1f8a7a';
+            }
+        });
+
+        // Prescription
+        document.getElementById('prescriptionBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('📄 Prescription upload dialog (simulated). Pharmacist review will be notified.');
+        });
+
+        // Nav links
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const text = this.innerText.trim();
+                alert(`🔹 Navigation: "${text}" (demo)`);
+            });
+        });
+
+        document.getElementById('seeAllLink').addEventListener('click', function() {
+            alert('📋 Showing all products (demo).');
+            categoryItems.forEach(c => c.classList.remove('active'));
+            document.querySelector('.category-item[data-category="all"]')?.classList.add('active');
+            currentCategory = 'all';
+            searchInput.value = '';
+            renderProducts('all', '');
+        });
+
+        // ----- INIT -----
+        renderProducts('all', '');
+        updateCartBadge();
+        updateAuthUI();
+        console.log('PharmaCare · full auth with OTP (mobile + password, forgot password)');
+    })();
 </script>
-
-<!-- README.md content as comment -->
-<!-- 
-README.md 
-# PharmaCare · modern pharmacy landing
-Clean, responsive healthcare UI with full interactivity.
-- Products, search, categories (Medicines, Vitamins, Personal Care, Baby Care, Medical Devices).
-- Product cards: price, stock, dosage, add to cart, wishlist toggle.
-- Shopping cart badge updates on add.
-- Prescription upload with pharmacist review hint.
-- Account & admin features represented in UI.
-Design: white + blue/green scheme, mobile-first.
-All interactive JS included: filtering, search, wishlist, cart counter.
--->
 </body>
 </html>
