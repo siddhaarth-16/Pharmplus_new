@@ -3,957 +3,3175 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PharmaCare · Sign in</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <title>MediStore - Pharmacy & Health</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        :root {
-            --green: #7cc93f;
-            --green-dark: #5da62c;
-            --green-pale: #eaf7dd;
-            --black: #161616;
-            --black-soft: #2a2a2a;
-            --text: #1c1c1c;
-            --muted: #5f6b5a;
-            --bg: #f6f9f3;
-            --border: #dfe8d6;
-        }
+        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --secondary: #16a34a;
+            --secondary-light: #dcfce7;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --radius: 12px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 8px 40px rgba(0, 0, 0, 0.10);
+            --transition: all 0.25s ease;
+        }
+        html {
+            scroll-behavior: smooth;
         }
         body {
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.5;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            min-height: 100vh;
         }
-        .app {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 1rem 1.5rem 3rem;
-        }
-        /* navbar */
-        .navbar {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--black);
-            padding: 0.75rem 1.5rem;
-            border-radius: 2rem;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-            margin-bottom: 2rem;
-            transition: box-shadow 0.3s ease;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-weight: 600;
-            font-size: 1.6rem;
-            color: white;
-        }
-        .logo i { color: var(--green); font-size: 1.8rem; }
-        .nav-links {
-            display: flex;
-            gap: 1.8rem;
-            font-weight: 500;
-            color: #e6e9e2;
-            flex-wrap: wrap;
-        }
-        .nav-links a {
+        a {
             text-decoration: none;
-            color: #d9ded3;
-            transition: color 0.2s, transform 0.2s;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
+            color: inherit;
+        }
+        button {
             cursor: pointer;
-        }
-        .nav-links a:hover { color: var(--green); transform: translateY(-1px); }
-        .nav-links .cart-badge {
-            background: var(--green);
-            color: var(--black);
-            border-radius: 20px;
-            padding: 0.1rem 0.6rem;
-            font-size: 0.7rem;
-            font-weight: 700;
-            display: inline-block;
-            transition: transform 0.25s cubic-bezier(.34,1.56,.64,1);
-        }
-        .cart-badge.bump { transform: scale(1.4); }
-        .nav-actions {
-            display: flex;
-            gap: 0.8rem;
-            align-items: center;
-        }
-        .nav-actions .btn-outline {
-            background: transparent;
-            border: 1.5px solid #4a4a4a;
-            padding: 0.4rem 1rem;
-            border-radius: 30px;
-            font-weight: 500;
-            color: #eaeaea;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .nav-actions .btn-outline:hover { background: #262626; border-color: var(--green); }
-        .nav-actions .btn-primary {
-            background: var(--green);
+            font-family: inherit;
             border: none;
-            padding: 0.4rem 1.2rem;
-            border-radius: 30px;
-            font-weight: 600;
-            color: var(--black);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .nav-actions .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); }
-        /* search */
-        .search-section {
-            background: white;
-            border-radius: 60px;
-            padding: 0.3rem 0.3rem 0.3rem 1.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-            margin-bottom: 2.2rem;
-            border: 1px solid var(--border);
-            transition: box-shadow 0.25s ease, border-color 0.25s ease;
-        }
-        .search-section:focus-within {
-            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.1);
-            border-color: var(--green);
-        }
-        .search-section i { color: var(--muted); font-size: 1.1rem; }
-        .search-section input {
-            border: none;
-            padding: 0.9rem 0.5rem;
-            font-size: 1rem;
-            width: 100%;
-            background: transparent;
             outline: none;
         }
-        .search-section input::placeholder { color: #a3b39a; }
-        .search-section button {
-            background: var(--black);
-            border: none;
-            padding: 0.7rem 1.8rem;
-            border-radius: 40px;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+            outline: none;
         }
-        .search-section button:hover { background: var(--black-soft); color: var(--green); transform: translateY(-1px); }
-        .search-section button:active { transform: scale(0.96); }
-        /* promo */
-        .promo-banner {
-            background: linear-gradient(135deg, var(--green-pale), #d6efc0);
-            border-radius: 28px;
-            padding: 1.2rem 2rem;
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 8px;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.30);
+        }
+        .btn-secondary {
+            background: var(--secondary);
+            color: #fff;
+        }
+        .btn-secondary:hover {
+            background: #15803d;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(22, 163, 74, 0.30);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 0.8rem;
+        }
+        .btn-lg {
+            padding: 14px 32px;
+            font-size: 1rem;
+        }
+
+        /* ===== HEADER / NAVBAR ===== */
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 14px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        }
+        .navbar .container {
             display: flex;
-            flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 2.5rem;
-            border-left: 6px solid var(--black);
+            gap: 16px;
+            flex-wrap: wrap;
         }
-        .promo-banner h3 {
-            font-weight: 600;
-            color: var(--black);
+        .nav-brand {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
+            gap: 10px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
         }
-        .promo-banner h3 i { color: var(--green-dark); font-size: 1.6rem; }
-        .promo-banner .tag {
-            background: var(--black);
-            padding: 0.3rem 1.2rem;
-            border-radius: 40px;
-            font-weight: 500;
-            color: var(--green);
-            font-size: 0.9rem;
+        .nav-brand i {
+            font-size: 1.8rem;
+            color: var(--secondary);
         }
-        /* categories */
-        .categories {
+        .nav-brand span {
+            color: var(--gray-800);
+        }
+        .nav-search {
+            flex: 1;
+            max-width: 480px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem 1.2rem;
-            margin-bottom: 2.2rem;
+            align-items: center;
+            background: var(--gray-100);
+            border-radius: 40px;
+            padding: 0 16px;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+        .nav-search:focus-within {
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
+        }
+        .nav-search input {
+            flex: 1;
+            padding: 10px 12px;
+            border: none;
+            background: transparent;
+            font-size: 0.95rem;
+            color: var(--gray-800);
+        }
+        .nav-search input::placeholder {
+            color: var(--gray-400);
+        }
+        .nav-search button {
+            background: none;
+            font-size: 1.1rem;
+            color: var(--gray-500);
+            padding: 6px 0 6px 8px;
+            transition: var(--transition);
+        }
+        .nav-search button:hover {
+            color: var(--primary);
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .nav-actions .icon-btn {
+            position: relative;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            color: var(--gray-600);
+            transition: var(--transition);
+            border: none;
+        }
+        .nav-actions .icon-btn:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .nav-actions .icon-btn .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
             justify-content: center;
         }
-        .category-item {
-            background: white;
-            padding: 0.45rem 1.3rem;
-            border-radius: 40px;
-            font-weight: 500;
-            color: var(--text);
-            box-shadow: 0 2px 8px rgba(0,0,0, 0.04);
-            border: 1px solid transparent;
-            transition: 0.2s;
+        .nav-actions .auth-btns {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-actions .auth-btns .btn {
+            padding: 8px 18px;
+            font-size: 0.85rem;
+        }
+        .nav-actions .user-menu {
+            display: none;
+            align-items: center;
+            gap: 10px;
             cursor: pointer;
+        }
+        .nav-actions .user-menu.active {
+            display: flex;
+        }
+        .nav-actions .user-menu .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 0.4rem;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
         }
-        .category-item i { color: var(--green-dark); }
-        .category-item.active {
-            background: var(--black);
-            border-color: var(--black);
-            color: var(--green);
-            transform: scale(1.04);
+
+        /* Mobile menu toggle */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            font-size: 1.5rem;
+            color: var(--gray-700);
+            padding: 4px 8px;
+            border: none;
         }
-        .category-item.active i { color: var(--green); }
-        .category-item:hover { background: var(--green-pale); transform: translateY(-1px); }
-        /* product grid */
-        .section-title {
+
+        /* ===== CATEGORY BAR ===== */
+        .category-bar {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 10px 0;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+        .category-bar .container {
             display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .category-bar a {
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            background: var(--gray-100);
+            transition: var(--transition);
+            display: inline-block;
+        }
+        .category-bar a:hover,
+        .category-bar a.active {
+            background: var(--primary);
+            color: #fff;
+        }
+        .category-bar a i {
+            margin-right: 6px;
+        }
+
+        /* ===== MAIN LAYOUT ===== */
+        .main-content {
+            padding: 32px 0 60px;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, #eef2ff 0%, #dbeafe 100%);
+            border-radius: var(--radius);
+            padding: 48px 40px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: baseline;
-            margin: 2rem 0 1rem;
+            flex-wrap: wrap;
+            gap: 24px;
         }
-        .section-title h2 {
+        .hero-text h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            line-height: 1.2;
+        }
+        .hero-text h1 span {
+            color: var(--primary);
+        }
+        .hero-text p {
+            color: var(--gray-600);
+            font-size: 1.05rem;
+            margin-top: 8px;
+            max-width: 480px;
+        }
+        .hero-text .btn {
+            margin-top: 16px;
+        }
+        .hero-image {
+            font-size: 5rem;
+            opacity: 0.6;
+            color: var(--primary);
+        }
+
+        /* ===== SECTION HEADERS ===== */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+        .section-header h2 i {
+            color: var(--primary);
+            margin-right: 8px;
+        }
+        .section-header .view-all {
+            color: var(--primary);
             font-weight: 600;
-            color: var(--black);
-            font-size: 1.6rem;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: var(--transition);
         }
-        .section-title span {
-            color: var(--green-dark);
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
+        .section-header .view-all:hover {
+            color: var(--primary-dark);
+            gap: 8px;
         }
-        .section-title span:hover { text-decoration: underline; }
-        .product-grid {
+
+        /* ===== PRODUCT CARDS ===== */
+        .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
         }
         .product-card {
-            background: white;
-            border-radius: 24px;
-            padding: 1.2rem 0.8rem 1rem;
-            box-shadow: 0 6px 18px rgba(0,0,0, 0.05);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            border: 1px solid var(--border);
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 18px 16px 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--gray-100);
+            position: relative;
             display: flex;
             flex-direction: column;
-            animation: fadeInUp 0.4s ease both;
         }
         .product-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.1);
-            border-color: var(--green);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-light);
         }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .product-img {
-            background: var(--green-pale);
-            border-radius: 20px;
-            padding: 1rem 0.2rem;
-            text-align: center;
-            margin-bottom: 0.8rem;
-            font-size: 2.8rem;
-            color: var(--green-dark);
-            transition: transform 0.25s ease;
-        }
-        .product-card:hover .product-img { transform: scale(1.06); }
-        .product-name { font-weight: 600; font-size: 1rem; color: var(--black); }
-        .product-meta {
-            font-size: 0.8rem;
-            color: var(--muted);
-            margin: 0.2rem 0 0.5rem;
-            display: flex;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-        }
-        .product-meta i { margin-right: 3px; }
-        .product-price {
-            font-weight: 700;
-            color: var(--black);
-            font-size: 1.2rem;
-            margin: 0.2rem 0 0.4rem;
-        }
-        .product-price .rupee { color: var(--green-dark); }
-        .stock-badge {
+        .product-card .badge-offer {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #ef4444;
+            color: #fff;
             font-size: 0.7rem;
-            background: var(--green-pale);
-            color: var(--green-dark);
-            padding: 0.15rem 0.8rem;
+            font-weight: 700;
+            padding: 3px 10px;
             border-radius: 40px;
-            align-self: flex-start;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
         }
-        .card-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 0.3rem;
-        }
-        .card-actions button {
-            background: var(--black);
-            border: none;
-            padding: 0.35rem 0.9rem;
-            border-radius: 30px;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.15s;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-        .card-actions button:hover { background: var(--green-dark); color: var(--black); }
-        .card-actions button:active { transform: scale(0.94); }
-        .wishlist-icon {
-            color: var(--green-dark);
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), color 0.2s;
-        }
-        .wishlist-icon:hover { color: var(--black); }
-        .wishlist-icon.pop { transform: scale(1.35); }
-        /* prescription */
-        .prescription-banner {
-            margin: 2.5rem 0 2rem;
-            background: white;
-            border-radius: 28px;
-            padding: 1.2rem 2rem;
-            border: 1px dashed var(--green);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .prescription-banner .left {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-        }
-        .prescription-banner .left i { font-size: 2.2rem; color: var(--green-dark); }
-        .prescription-banner .left div { font-weight: 500; color: var(--black); }
-        .prescription-banner .left small { color: var(--muted); display: block; }
-        .prescription-banner .btn-upload {
-            background: var(--black);
-            border: none;
-            padding: 0.6rem 1.8rem;
+        .product-card .badge-rx {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #f59e0b;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 10px;
             border-radius: 40px;
-            color: var(--green);
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
         }
-        .prescription-banner .btn-upload:hover { background: var(--black-soft); transform: translateY(-1px); }
-        .footer-note {
-            margin-top: 3rem;
-            border-top: 1px solid var(--border);
-            padding-top: 2rem;
+        .product-card .product-img {
+            height: 120px;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            color: var(--muted);
-            font-size: 0.9rem;
-        }
-        .footer-note i { color: var(--green-dark); margin-right: 6px; }
-
-        /* ----- AUTH MODAL ----- */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.55);
             align-items: center;
             justify-content: center;
-            z-index: 999;
-            opacity: 0;
-            transition: opacity 0.2s ease;
+            background: var(--gray-50);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 3rem;
+            color: var(--gray-400);
         }
-        .modal-overlay.active { display: flex; opacity: 1; }
-        .modal-box {
-            background: white;
-            max-width: 420px;
-            width: 92%;
-            padding: 2rem 2rem 1.8rem;
-            border-radius: 32px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-            position: relative;
-            transform: scale(0.94) translateY(8px);
-            opacity: 0;
-            transition: transform 0.22s cubic-bezier(.2,.9,.3,1.2), opacity 0.2s ease;
+        .product-card .product-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--gray-800);
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
-        .modal-overlay.active .modal-box {
-            transform: scale(1) translateY(0);
-            opacity: 1;
+        .product-card .product-brand {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            margin-bottom: 6px;
         }
-        .modal-box .close-modal {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            font-size: 1.4rem;
-            color: #9fae96;
-            cursor: pointer;
-            background: none;
-            border: none;
-            transition: transform 0.2s, color 0.2s;
-        }
-        .modal-box .close-modal:hover { color: var(--black); transform: rotate(90deg); }
-        .modal-box h2 {
+        .product-card .product-price {
             font-weight: 700;
-            color: var(--black);
-            margin-bottom: 0.4rem;
-            font-size: 1.6rem;
+            font-size: 1.15rem;
+            color: var(--gray-900);
+            margin-top: auto;
         }
-        .modal-box .sub {
-            color: var(--muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
+        .product-card .product-price .old {
+            font-weight: 400;
+            font-size: 0.85rem;
+            color: var(--gray-400);
+            text-decoration: line-through;
+            margin-left: 8px;
         }
-        .modal-box .form-group {
-            margin-bottom: 1rem;
+        .product-card .product-stock {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 4px 0 10px;
         }
-        .modal-box .form-group label {
+        .product-card .product-stock.in {
+            color: var(--secondary);
+        }
+        .product-card .product-stock.low {
+            color: #f59e0b;
+        }
+        .product-card .product-stock.out {
+            color: #ef4444;
+        }
+        .product-card .card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .product-card .card-actions .btn {
+            flex: 1;
+            justify-content: center;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+        }
+        .product-card .card-actions .wishlist-btn {
+            width: 38px;
+            flex: 0 0 38px;
+            border-radius: 8px;
+            background: var(--gray-100);
+            color: var(--gray-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: var(--transition);
+            border: none;
+        }
+        .product-card .card-actions .wishlist-btn:hover {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+        .product-card .card-actions .wishlist-btn.active {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        /* ===== FILTERS ===== */
+        .filters-bar {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 24px;
+            align-items: center;
+            border: 1px solid var(--gray-100);
+        }
+        .filters-bar .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filters-bar .filter-group label {
             font-weight: 500;
             font-size: 0.85rem;
-            color: var(--black);
-            display: block;
-            margin-bottom: 0.2rem;
+            color: var(--gray-600);
         }
-        .modal-box .form-group input {
-            width: 100%;
-            padding: 0.7rem 1rem;
-            border-radius: 40px;
-            border: 1px solid var(--border);
-            font-size: 1rem;
-            background: var(--bg);
-            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-        }
-        .modal-box .form-group input:focus {
-            border-color: var(--green);
-            outline: none;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(124, 201, 63, 0.18);
-        }
-        .modal-box .btn-submit {
-            width: 100%;
-            background: var(--black);
-            border: none;
-            padding: 0.8rem;
-            border-radius: 40px;
-            color: var(--green);
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.15s;
-            margin-top: 0.5rem;
-        }
-        .modal-box .btn-submit:hover:not(:disabled) { background: var(--black-soft); }
-        .modal-box .btn-submit:active:not(:disabled) { transform: scale(0.98); }
-        .modal-box .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
-        .modal-box .auth-switch {
-            text-align: center;
-            margin-top: 1.2rem;
-            font-size: 0.9rem;
-            color: var(--muted);
-        }
-        .modal-box .auth-switch span {
-            color: var(--green-dark);
-            font-weight: 700;
-            cursor: pointer;
-        }
-        .modal-box .auth-switch span:hover { text-decoration: underline; }
-        .modal-box .forgot-link {
-            text-align: right;
-            font-size: 0.8rem;
-            color: var(--green-dark);
-            cursor: pointer;
-            margin-top: -0.2rem;
-            font-weight: 600;
-        }
-        .modal-box .forgot-link:hover { text-decoration: underline; }
-        .msg {
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
+        .filters-bar .filter-group select,
+        .filters-bar .filter-group input {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--gray-200);
+            background: #fff;
             font-size: 0.85rem;
-            margin: 0.5rem 0;
-            background: var(--green-pale);
-            color: var(--green-dark);
-            animation: fadeInUp 0.2s ease both;
+            color: var(--gray-800);
+            min-width: 120px;
         }
-        .msg.error { background: #fde3e3; color: #a5333a; }
+        .filters-bar .filter-group select:focus,
+        .filters-bar .filter-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+        .filters-bar .filter-group input[type="range"] {
+            min-width: 100px;
+            padding: 0;
+            accent-color: var(--primary);
+        }
+        .filters-bar .filter-group .price-display {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            min-width: 60px;
+        }
+        .filters-bar .clear-filters {
+            color: var(--gray-500);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-left: auto;
+        }
+        .filters-bar .clear-filters:hover {
+            color: #ef4444;
+        }
 
-        .toast-stack {
+        /* ===== OFFERS BANNER ===== */
+        .offers-banner {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: var(--radius);
+            padding: 28px 36px;
+            margin-bottom: 40px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .offers-banner h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        .offers-banner h3 i {
+            margin-right: 10px;
+        }
+        .offers-banner p {
+            opacity: 0.85;
+            font-size: 0.95rem;
+        }
+        .offers-banner .btn {
+            background: #fff;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .offers-banner .btn:hover {
+            background: var(--gray-100);
+            transform: scale(1.02);
+        }
+
+        /* ===== CART SIDEBAR ===== */
+        .cart-overlay {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 2000;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+        .cart-overlay.active {
+            display: block;
+        }
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -460px;
+            width: 440px;
+            max-width: 92vw;
+            height: 100%;
+            background: #fff;
+            z-index: 2001;
+            transition: right 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
-            z-index: 1200;
+            box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
         }
-        .toast {
-            background: var(--black);
-            color: var(--green);
-            padding: 0.7rem 1.2rem;
-            border-radius: 14px;
+        .cart-sidebar.open {
+            right: 0;
+        }
+        .cart-sidebar .cart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .cart-sidebar .cart-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .cart-sidebar .cart-header .close-btn {
+            background: none;
+            font-size: 1.4rem;
+            color: var(--gray-500);
+            padding: 4px 8px;
+            border: none;
+        }
+        .cart-sidebar .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 0;
+        }
+        .cart-sidebar .cart-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-100);
+            align-items: center;
+        }
+        .cart-sidebar .cart-item .item-img {
+            width: 52px;
+            height: 52px;
+            background: var(--gray-100);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--gray-400);
+            flex-shrink: 0;
+        }
+        .cart-sidebar .cart-item .item-info {
+            flex: 1;
+        }
+        .cart-sidebar .cart-item .item-info h4 {
             font-size: 0.9rem;
-            box-shadow: 0 10px 24px rgba(0,0,0,0.28);
-            animation: toastIn 0.25s ease both;
-            max-width: 300px;
+            font-weight: 600;
         }
-        .toast.error { background: #a5333a; color: white; }
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateY(10px) scale(0.97); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        .cart-sidebar .cart-item .item-info .item-price {
+            font-size: 0.85rem;
+            color: var(--gray-600);
         }
-        .toast.leaving { animation: toastOut 0.25s ease both; }
-        @keyframes toastOut {
-            to { opacity: 0; transform: translateY(6px) scale(0.97); }
+        .cart-sidebar .cart-item .item-qty {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .cart-sidebar .cart-item .item-qty button {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background: var(--gray-100);
+            border: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .cart-sidebar .cart-item .item-qty button:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .cart-sidebar .cart-item .item-qty span {
+            font-weight: 600;
+            min-width: 24px;
+            text-align: center;
+        }
+        .cart-sidebar .cart-item .item-remove {
+            background: none;
+            color: var(--gray-400);
+            font-size: 0.9rem;
+            padding: 4px;
+            transition: var(--transition);
+        }
+        .cart-sidebar .cart-item .item-remove:hover {
+            color: #ef4444;
+        }
+        .cart-sidebar .cart-footer {
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-200);
+        }
+        .cart-sidebar .cart-footer .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+        .cart-sidebar .cart-footer .btn {
+            width: 100%;
+            justify-content: center;
+        }
+        .cart-empty {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--gray-500);
+        }
+        .cart-empty i {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            opacity: 0.4;
         }
 
-        @media (max-width: 700px) {
-            .navbar { flex-direction: column; align-items: stretch; gap: 0.8rem; }
-            .nav-links { justify-content: center; flex-wrap: wrap; gap: 1rem; }
-            .nav-actions { justify-content: center; }
-            .search-section { flex-wrap: wrap; border-radius: 40px; padding: 0.4rem; }
-            .search-section input { padding: 0.6rem 0.2rem; }
-            .search-section button { width: 100%; justify-content: center; margin-top: 0.2rem; }
-            .promo-banner { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
-            .modal-box { padding: 1.5rem; }
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: #fff;
+            border-radius: var(--radius);
+            max-width: 560px;
+            width: 100%;
+            padding: 32px 28px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.20);
+            animation: modalFade 0.25s ease;
+        }
+        @keyframes modalFade {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .modal .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .modal .modal-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .modal .modal-header .close-btn {
+            background: none;
+            font-size: 1.4rem;
+            color: var(--gray-500);
+            padding: 4px;
+            border: none;
+        }
+        .modal .form-group {
+            margin-bottom: 16px;
+        }
+        .modal .form-group label {
+            display: block;
+            font-weight: 500;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            color: var(--gray-700);
+        }
+        .modal .form-group input,
+        .modal .form-group select,
+        .modal .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            background: #fff;
+        }
+        .modal .form-group input:focus,
+        .modal .form-group select:focus,
+        .modal .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+        }
+        .modal .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .modal .form-group .file-upload {
+            border: 2px dashed var(--gray-300);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .modal .form-group .file-upload:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+        .modal .form-group .file-upload input {
+            display: none;
+        }
+        .modal .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .modal .form-actions .btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        /* ===== TOAST ===== */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+            width: 100%;
+        }
+        .toast {
+            background: var(--gray-900);
+            color: #fff;
+            padding: 14px 20px;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideUp 0.35s ease;
+            border-left: 4px solid var(--primary);
+        }
+        .toast.success {
+            border-left-color: var(--secondary);
+        }
+        .toast.error {
+            border-left-color: #ef4444;
+        }
+        .toast i {
+            font-size: 1.2rem;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ===== AUTH PAGES (inline) ===== */
+        .auth-toggle {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--gray-500);
+        }
+        .auth-toggle a {
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .auth-toggle a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== PRODUCT DETAIL VIEW ===== */
+        .product-detail-view {
+            display: none;
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 32px;
+            box-shadow: var(--shadow);
+            margin-bottom: 32px;
+            border: 1px solid var(--gray-100);
+        }
+        .product-detail-view.active {
+            display: block;
+        }
+        .product-detail-view .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+        @media (max-width: 768px) {
+            .product-detail-view .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .product-detail-view .detail-img {
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            color: var(--gray-400);
+            min-height: 240px;
+        }
+        .product-detail-view .detail-info h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+        .product-detail-view .detail-info .brand {
+            color: var(--gray-500);
+            font-size: 0.95rem;
+        }
+        .product-detail-view .detail-info .price {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 8px 0;
+        }
+        .product-detail-view .detail-info .dosage {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            background: var(--gray-100);
+            padding: 4px 14px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+        .product-detail-view .detail-info .description {
+            margin: 12px 0 16px;
+            color: var(--gray-600);
+            line-height: 1.7;
+        }
+        .product-detail-view .detail-info .stock-status {
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .product-detail-view .detail-info .qty-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+        }
+        .product-detail-view .detail-info .qty-selector button {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: var(--gray-100);
+            border: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+        .product-detail-view .detail-info .qty-selector button:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .product-detail-view .detail-info .qty-selector span {
+            font-weight: 600;
+            font-size: 1.1rem;
+            min-width: 32px;
+            text-align: center;
+        }
+        .product-detail-view .detail-info .action-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        /* ===== ADMIN PANEL ===== */
+        .admin-panel {
+            display: none;
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 28px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-100);
+        }
+        .admin-panel.active {
+            display: block;
+        }
+        .admin-panel .admin-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 2px solid var(--gray-200);
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .admin-panel .admin-tabs button {
+            padding: 10px 20px;
+            background: none;
+            font-weight: 600;
+            color: var(--gray-500);
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        .admin-panel .admin-tabs button.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        .admin-panel .admin-tabs button:hover {
+            color: var(--primary);
+        }
+        .admin-panel .admin-content {
+            min-height: 300px;
+        }
+        .admin-panel .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .admin-panel .admin-table th {
+            text-align: left;
+            padding: 10px 12px;
+            background: var(--gray-50);
+            font-weight: 600;
+            color: var(--gray-600);
+            border-bottom: 2px solid var(--gray-200);
+        }
+        .admin-panel .admin-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--gray-100);
+            vertical-align: middle;
+        }
+        .admin-panel .admin-table .status-badge {
+            padding: 3px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .admin-panel .admin-table .status-badge.pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        .admin-panel .admin-table .status-badge.approved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .admin-panel .admin-table .status-badge.shipped {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        .admin-panel .admin-table .status-badge.delivered {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .admin-panel .admin-table .status-badge.cancelled {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        .admin-panel .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .admin-panel .admin-stats .stat-card {
+            background: var(--gray-50);
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+        .admin-panel .admin-stats .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .admin-panel .admin-stats .stat-card .label {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+        }
+
+        /* ===== ORDER TRACKING ===== */
+        .tracking-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 8px 0;
+        }
+        .tracking-timeline .step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            opacity: 0.5;
+        }
+        .tracking-timeline .step.done {
+            opacity: 1;
+        }
+        .tracking-timeline .step .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--gray-300);
+            flex-shrink: 0;
+        }
+        .tracking-timeline .step.done .dot {
+            background: var(--secondary);
+        }
+        .tracking-timeline .step .line {
+            width: 2px;
+            height: 20px;
+            background: var(--gray-200);
+            margin-left: 5px;
+        }
+        .tracking-timeline .step:last-child .line {
+            display: none;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .hero {
+                padding: 32px 24px;
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-text p {
+                max-width: 100%;
+            }
+            .hero-image {
+                font-size: 3.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+            .nav-search {
+                order: 3;
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+            .nav-actions .auth-btns .btn {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+            }
+            .nav-actions .auth-btns .btn span {
+                display: none;
+            }
+            .nav-actions .auth-btns .btn i {
+                margin: 0;
+            }
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 16px;
+            }
+            .filters-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            .filters-bar .filter-group {
+                flex-wrap: wrap;
+            }
+            .filters-bar .filter-group select,
+            .filters-bar .filter-group input {
+                min-width: 80px;
+                flex: 1;
+            }
+            .cart-sidebar {
+                width: 100%;
+                max-width: 100%;
+                right: -100%;
+            }
+            .hero-text h1 {
+                font-size: 1.6rem;
+            }
+            .offers-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+            .admin-panel .admin-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .admin-panel .admin-table {
+                font-size: 0.75rem;
+            }
+            .admin-panel .admin-table th,
+            .admin-panel .admin-table td {
+                padding: 6px 8px;
+            }
+        }
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .product-card {
+                padding: 12px;
+            }
+            .product-card .product-img {
+                height: 80px;
+                font-size: 2rem;
+            }
+            .product-card .product-name {
+                font-size: 0.8rem;
+            }
+            .product-card .product-price {
+                font-size: 0.95rem;
+            }
+            .modal {
+                padding: 20px 16px;
+            }
+        }
+
+        /* ===== UTILITY ===== */
+        .text-center {
+            text-align: center;
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mt-16 {
+            margin-top: 16px;
+        }
+        .mt-24 {
+            margin-top: 24px;
+        }
+        .mb-16 {
+            margin-bottom: 16px;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .flex {
+            display: flex;
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .w-full {
+            width: 100%;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--gray-200);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
 <body>
-<div class="app">
-    <header class="navbar">
-        <div class="logo"><i class="fas fa-capsules"></i> Pharma<span style="color:var(--green);">Care</span></div>
-        <div class="nav-links">
-            <a href="#" id="navHome"><i class="fas fa-home"></i> Home</a>
-            <a href="#" id="navProducts"><i class="fas fa-prescription-bottle"></i> Products</a>
-            <a href="#" id="navPrescription"><i class="fas fa-upload"></i> Prescription</a>
-            <a href="#" id="navAdmin"><i class="fas fa-user-md"></i> Admin</a>
-            <a href="#" id="navCart"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-badge" id="cartCount">3</span></a>
-        </div>
-        <div class="nav-actions">
-            <span class="btn-outline" id="signInBtn"><i class="fas fa-user-circle"></i> Sign in</span>
-            <span class="btn-primary" id="joinBtn"><i class="fas fa-user-plus"></i> Join</span>
+
+    <!-- ===== NAVBAR ===== -->
+    <header class="navbar" id="navbar">
+        <div class="container">
+            <a href="#" class="nav-brand" id="homeLink">
+                <i class="fas fa-heartbeat"></i> Medi<span>Store 2.0</span>
+            </a>
+
+            <div class="nav-search" id="mainSearch">
+                <input type="text" id="searchInput" placeholder="Search for medicines, vitamins, health products..." />
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="nav-actions">
+                <button class="icon-btn" id="cartToggle" title="Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="badge" id="cartCount">0</span>
+                </button>
+                <button class="icon-btn" id="wishlistToggle" title="Wishlist">
+                    <i class="fas fa-heart"></i>
+                </button>
+                <div class="auth-btns" id="authButtons">
+                    <button class="btn btn-outline btn-sm" id="loginBtn"><i class="fas fa-sign-in-alt"></i> <span>Login</span></button>
+                    <button class="btn btn-primary btn-sm" id="signupBtn"><i class="fas fa-user-plus"></i> <span>Sign Up</span></button>
+                </div>
+                <div class="user-menu" id="userMenu">
+                    <span class="avatar" id="userAvatar">U</span>
+                    <span id="userName" style="font-weight:600;font-size:0.9rem;">User</span>
+                    <button class="btn btn-sm btn-outline" id="logoutBtn" style="padding:4px 12px;font-size:0.75rem;">Logout</button>
+                </div>
+                <button class="mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></button>
+            </div>
         </div>
     </header>
 
-    <div class="search-section">
-        <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" placeholder="Search medicines, vitamins, personal care…" />
-        <button id="searchBtn"><i class="fas fa-arrow-right"></i> Search</button>
-    </div>
-    <div class="promo-banner">
-        <h3><i class="fas fa-tag"></i> Special offers & promotions</h3>
-        <span class="tag"><i class="fas fa-clock"></i> 20% off vitamins · ends soon</span>
-        <span class="tag"><i class="fas fa-gift"></i> Free delivery over ₹500</span>
-    </div>
-    <div class="categories" id="categoryContainer">
-        <span class="category-item active" data-category="all"><i class="fas fa-th-large"></i> All</span>
-        <span class="category-item" data-category="medicines"><i class="fas fa-pills"></i> Medicines</span>
-        <span class="category-item" data-category="vitamins"><i class="fas fa-vitamins"></i> Vitamins</span>
-        <span class="category-item" data-category="personal"><i class="fas fa-hand-sparkles"></i> Personal Care</span>
-        <span class="category-item" data-category="baby"><i class="fas fa-baby"></i> Baby Care</span>
-        <span class="category-item" data-category="devices"><i class="fas fa-stethoscope"></i> Medical Devices</span>
-    </div>
-    <div class="section-title">
-        <h2>⭐ Featured health products</h2>
-        <span id="seeAllLink">See all <i class="fas fa-arrow-right"></i></span>
-    </div>
-    <div class="product-grid" id="productGrid"></div>
-    <div class="prescription-banner">
-        <div class="left">
-            <i class="fas fa-prescription"></i>
-            <div>Upload prescription <small>Pharmacist review & approval</small></div>
+    <!-- ===== CATEGORY BAR ===== -->
+    <nav class="category-bar" id="categoryBar">
+        <div class="container">
+            <a href="#" class="active" data-category="all"><i class="fas fa-th-large"></i> All</a>
+            <a href="#" data-category="medicines"><i class="fas fa-pills"></i> Medicines</a>
+            <a href="#" data-category="vitamins"><i class="fas fa-leaf"></i> Vitamins</a>
+            <a href="#" data-category="personal-care"><i class="fas fa-spa"></i> Personal Care</a>
+            <a href="#" data-category="baby-care"><i class="fas fa-baby"></i> Baby Care</a>
+            <a href="#" data-category="medical-devices"><i class="fas fa-stethoscope"></i> Medical Devices</a>
+            <a href="#" data-category="indian-rupees"><i class="fas fa-rupee-sign"></i> Indian Meds</a>
+            <a href="#" id="adminPanelLink" style="display:none;background:var(--primary);color:#fff;">
+                <i class="fas fa-user-shield"></i> Admin
+            </a>
         </div>
-        <button class="btn-upload" id="prescriptionBtn"><i class="fas fa-cloud-upload-alt"></i> Upload Rx</button>
-    </div>
-    <div class="footer-note">
-        <div><i class="fas fa-truck"></i> Home delivery · pickup available</div>
-        <div><i class="fas fa-map-pin"></i> Track order</div>
-        <div><i class="fas fa-user-cog"></i> Account · wishlist</div>
-        <div><i class="fas fa-credit-card"></i> Secure checkout</div>
-    </div>
-</div>
+    </nav>
 
-<!-- ========== AUTH MODAL (mobile + password only, no OTP) ========== -->
-<div class="modal-overlay" id="authModal">
-    <div class="modal-box">
-        <button class="close-modal" id="closeModal"><i class="fas fa-times"></i></button>
-        <h2 id="modalTitle">Sign in</h2>
-        <div class="sub" id="modalSub">Enter your mobile number & password</div>
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+        <div class="container">
 
-        <div class="form-group">
-            <label>Mobile Number</label>
-            <input type="tel" id="authMobile" placeholder="+91 98765 43210" />
+            <!-- Hero -->
+            <section class="hero" id="heroSection">
+                <div class="hero-text">
+                    <h1>Your Health, <span>Our Priority</span></h1>
+                    <p>Shop trusted medicines, vitamins, and wellness products with fast home delivery. Upload prescriptions for pharmacist review.</p>
+                    <button class="btn btn-primary btn-lg" id="heroShopBtn"><i class="fas fa-shopping-bag"></i> Shop Now</button>
+                </div>
+                <div class="hero-image">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+            </section>
+
+            <!-- Offers Banner -->
+            <section class="offers-banner" id="offersBanner">
+                <div>
+                    <h3><i class="fas fa-tags"></i> Special Offers</h3>
+                    <p>Get up to 25% off on selected medicines &amp; health products. Limited time!</p>
+                </div>
+                <button class="btn" id="offersBtn">View Offers <i class="fas fa-arrow-right"></i></button>
+            </section>
+
+            <!-- Filters -->
+            <div class="filters-bar" id="filtersBar">
+                <div class="filter-group">
+                    <label><i class="fas fa-tag"></i> Brand</label>
+                    <select id="filterBrand">
+                        <option value="all">All Brands</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-folder"></i> Category</label>
+                    <select id="filterCategory">
+                        <option value="all">All Categories</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-dollar-sign"></i> Price</label>
+                    <input type="range" id="filterPrice" min="0" max="5000" value="5000" />
+                    <span class="price-display" id="priceDisplay">₹5000</span>
+                </div>
+                <span class="clear-filters" id="clearFilters"><i class="fas fa-times"></i> Clear</span>
+            </div>
+
+            <!-- Section: Featured Products -->
+            <div class="section-header">
+                <h2><i class="fas fa-star"></i> Featured Products</h2>
+                <a href="#" class="view-all" id="viewAllProducts">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="products-grid" id="productsGrid">
+                <!-- rendered by JS -->
+            </div>
+
+            <!-- Product Detail View -->
+            <div class="product-detail-view" id="productDetailView">
+                <div class="detail-grid">
+                    <div class="detail-img" id="detailImg"><i class="fas fa-capsules"></i></div>
+                    <div class="detail-info" id="detailInfo">
+                        <h2 id="detailName">Product Name</h2>
+                        <div class="brand" id="detailBrand">Brand</div>
+                        <div class="price" id="detailPrice">₹0.00</div>
+                        <div class="dosage" id="detailDosage">Dosage: 10mg</div>
+                        <p class="description" id="detailDesc">Description here.</p>
+                        <div class="stock-status" id="detailStock">In Stock</div>
+                        <div class="qty-selector">
+                            <button id="detailQtyMinus">−</button>
+                            <span id="detailQty">1</span>
+                            <button id="detailQtyPlus">+</button>
+                        </div>
+                        <div class="action-row">
+                            <button class="btn btn-primary" id="detailAddCart"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                            <button class="btn btn-outline" id="detailWishlist"><i class="fas fa-heart"></i> Wishlist</button>
+                            <button class="btn btn-secondary" id="detailBuyNow"><i class="fas fa-bolt"></i> Buy Now</button>
+                        </div>
+                        <div class="mt-16" id="detailPrescriptionUpload" style="display:none;">
+                            <button class="btn btn-outline btn-sm" id="uploadPrescriptionBtn"><i class="fas fa-prescription"></i> Upload Prescription</button>
+                            <span style="font-size:0.8rem;color:var(--gray-500);margin-left:8px;">Prescription required for this item</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-16">
+                    <button class="btn btn-outline btn-sm" id="closeDetailBtn"><i class="fas fa-arrow-left"></i> Back to Products</button>
+                </div>
+            </div>
+
+            <!-- Admin Panel -->
+            <div class="admin-panel" id="adminPanel">
+                <h2 style="margin-bottom:8px;"><i class="fas fa-user-shield" style="color:var(--primary);"></i> Admin Dashboard</h2>
+                <p style="color:var(--gray-500);margin-bottom:20px;">Manage products, orders, prescriptions, and customers.</p>
+                <div class="admin-tabs" id="adminTabs">
+                    <button class="active" data-tab="dashboard">Dashboard</button>
+                    <button data-tab="products">Products</button>
+                    <button data-tab="orders">Orders</button>
+                    <button data-tab="prescriptions">Prescriptions</button>
+                    <button data-tab="customers">Customers</button>
+                    <button data-tab="reports">Reports</button>
+                </div>
+                <div class="admin-content" id="adminContent">
+                    <!-- rendered by JS -->
+                </div>
+            </div>
+
         </div>
-        <div class="form-group">
-            <label id="passwordLabel">Password</label>
-            <input type="password" id="authPassword" placeholder="Enter password" />
+    </main>
+
+    <!-- ===== CART SIDEBAR ===== -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart" style="color:var(--primary);"></i> Your Cart</h3>
+            <button class="close-btn" id="closeCart"><i class="fas fa-times"></i></button>
         </div>
-        <div class="forgot-link" id="forgotLink">Forgot password?</div>
-
-        <div id="authMessage" class="msg" style="display:none;"></div>
-
-        <button class="btn-submit" id="authSubmit">Sign in</button>
-        <div class="auth-switch" id="authSwitch">
-            Don't have an account? <span id="switchAuthMode">Join now</span>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Your cart is empty.</p>
+                <button class="btn btn-primary btn-sm mt-8" id="continueShoppingBtn">Continue Shopping</button>
+            </div>
+        </div>
+        <div class="cart-footer" id="cartFooter" style="display:none;">
+            <div class="cart-total">
+                <span>Total</span>
+                <span id="cartTotalPrice">₹0.00</span>
+            </div>
+            <button class="btn btn-primary" id="checkoutBtn"><i class="fas fa-lock"></i> Proceed to Checkout</button>
         </div>
     </div>
-</div>
 
-<div class="toast-stack" id="toastStack"></div>
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent">
+            <!-- rendered by JS -->
+        </div>
+    </div>
 
-<script>
-    (function() {
-        const API_BASE = 'http://localhost:4000/api';
+    <!-- ===== TOAST CONTAINER ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // ============================================================
+        //  DATA STORE (simulates database)
+        // ============================================================
+        const DB = {
+            users: [{
+                id: 1,
+                name: 'Admin User',
+                email: 'admin@medistore.com',
+                password: 'admin123',
+                role: 'admin',
+                address: '123 Health St, Mumbai',
+                phone: '9876543210'
+            }, {
+                id: 2,
+                name: 'John Doe',
+                email: 'john@example.com',
+                password: 'password',
+                role: 'customer',
+                address: '456 Wellness Ave, Delhi',
+                phone: '9876543211'
+            }],
+            products: [{
+                id: 1,
+                name: 'Paracetamol 500mg',
+                category: 'medicines',
+                brand: 'Cipla',
+                price: 45,
+                dosage: '500mg',
+                stock: 120,
+                description: 'Effective pain reliever and fever reducer. Suitable for adults and children over 12 years.',
+                image: '💊',
+                prescriptionRequired: false,
+                offer: 10
+            }, {
+                id: 2,
+                name: 'Vitamin C 1000mg',
+                category: 'vitamins',
+                brand: 'HealthKart',
+                price: 299,
+                dosage: '1000mg',
+                stock: 85,
+                description: 'High-strength Vitamin C supplement to support immune system and overall health.',
+                image: '🍊',
+                prescriptionRequired: false,
+                offer: 0
+            }, {
+                id: 3,
+                name: 'Amoxicillin 250mg',
+                category: 'medicines',
+                brand: 'GlaxoSmithKline',
+                price: 180,
+                dosage: '250mg',
+                stock: 45,
+                description: 'Antibiotic used to treat bacterial infections. Prescription required.',
+                image: '💊',
+                prescriptionRequired: true,
+                offer: 0
+            }, {
+                id: 4,
+                name: 'Multivitamin Tablets',
+                category: 'vitamins',
+                brand: 'Nature\'s Bounty',
+                price: 450,
+                dosage: 'Once daily',
+                stock: 60,
+                description: 'Complete multivitamin with essential minerals for daily nutritional support.',
+                image: '🧪',
+                prescriptionRequired: false,
+                offer: 15
+            }, {
+                id: 5,
+                name: 'Baby Diapers (Pack of 30)',
+                category: 'baby-care',
+                brand: 'Pampers',
+                price: 320,
+                dosage: 'Size M',
+                stock: 30,
+                description: 'Soft, absorbent diapers for babies. Hypoallergenic and gentle on skin.',
+                image: '👶',
+                prescriptionRequired: false,
+                offer: 5
+            }, {
+                id: 6,
+                name: 'Blood Pressure Monitor',
+                category: 'medical-devices',
+                brand: 'Omron',
+                price: 2499,
+                dosage: 'Digital',
+                stock: 18,
+                description: 'Automatic upper arm blood pressure monitor with large display and memory function.',
+                image: '🩺',
+                prescriptionRequired: false,
+                offer: 10
+            }, {
+                id: 7,
+                name: 'Cetirizine 10mg',
+                category: 'medicines',
+                brand: 'Dr. Reddy\'s',
+                price: 85,
+                dosage: '10mg',
+                stock: 95,
+                description: 'Antihistamine for allergy relief. Non-drowsy formula.',
+                image: '💊',
+                prescriptionRequired: false,
+                offer: 0
+            }, {
+                id: 8,
+                name: 'Omega-3 Fish Oil',
+                category: 'vitamins',
+                brand: 'Seven Seas',
+                price: 550,
+                dosage: '1000mg',
+                stock: 40,
+                description: 'Rich in EPA and DHA for heart and brain health. High-quality fish oil.',
+                image: '🐟',
+                prescriptionRequired: false,
+                offer: 20
+            }, {
+                id: 9,
+                name: 'Ayurvedic Chyawanprash',
+                category: 'indian-rupees',
+                brand: 'Dabur',
+                price: 199,
+                dosage: '10g daily',
+                stock: 70,
+                description: 'Traditional Ayurvedic herbal supplement for immunity and vitality.',
+                image: '🌿',
+                prescriptionRequired: false,
+                offer: 8
+            }, {
+                id: 10,
+                name: 'Digital Thermometer',
+                category: 'medical-devices',
+                brand: 'Dr. Morepen',
+                price: 399,
+                dosage: 'Digital',
+                stock: 55,
+                description: 'Fast and accurate digital thermometer for oral, rectal, or axillary use.',
+                image: '🌡️',
+                prescriptionRequired: false,
+                offer: 0
+            }, {
+                id: 11,
+                name: 'Shampoo Anti-Dandruff',
+                category: 'personal-care',
+                brand: 'Head & Shoulders',
+                price: 220,
+                dosage: '200ml',
+                stock: 40,
+                description: 'Clinically proven anti-dandruff shampoo with zinc pyrithione.',
+                image: '🧴',
+                prescriptionRequired: false,
+                offer: 0
+            }, {
+                id: 12,
+                name: 'Baby Lotion 500ml',
+                category: 'baby-care',
+                brand: 'Johnson\'s',
+                price: 180,
+                dosage: '500ml',
+                stock: 35,
+                description: 'Gentle baby lotion with aloe vera and vitamin E. Dermatologically tested.',
+                image: '🧴',
+                prescriptionRequired: false,
+                offer: 0
+            }, {
+                id: 13,
+                name: 'Metformin 500mg',
+                category: 'medicines',
+                brand: 'USV',
+                price: 75,
+                dosage: '500mg',
+                stock: 110,
+                description: 'Anti-diabetic medication used to control blood sugar levels. Prescription required.',
+                image: '💊',
+                prescriptionRequired: true,
+                offer: 0
+            }, {
+                id: 14,
+                name: 'Vitamin D3 2000 IU',
+                category: 'vitamins',
+                brand: 'HealthKart',
+                price: 350,
+                dosage: '2000 IU',
+                stock: 65,
+                description: 'High-potency Vitamin D3 supplement for bone health and immune support.',
+                image: '☀️',
+                prescriptionRequired: false,
+                offer: 10
+            }, {
+                id: 15,
+                name: 'Sanitizer 500ml',
+                category: 'personal-care',
+                brand: 'Purell',
+                price: 160,
+                dosage: '500ml',
+                stock: 80,
+                description: 'Alcohol-based hand sanitizer with moisturizers. Kills 99.9% germs.',
+                image: '🧴',
+                prescriptionRequired: false,
+                offer: 0
+            }],
+            cart: [], // { productId, quantity }
+            orders: [],
+            prescriptions: [],
+            addresses: [],
+            wishlist: [],
+            orderCounter: 1000
+        };
+
+        // ============================================================
+        //  STATE
+        // ============================================================
+        let state = {
+            currentUser: null,
+            currentCategory: 'all',
+            currentProducts: [...DB.products],
+            cart: [],
+            selectedProductId: null,
+            adminTab: 'dashboard',
+            isAdmin: false,
+            searchQuery: '',
+            filterBrand: 'all',
+            filterCategory: 'all',
+            filterPrice: 5000,
+            detailQty: 1,
+            isCartOpen: false,
+            isModalOpen: false,
+            modalType: null, // 'login', 'signup', 'checkout', 'prescription', 'address'
+            editingProductId: null,
+        };
+
+        // ============================================================
+        //  DOM REFS
+        // ============================================================
+        const $ = (sel) => document.querySelector(sel);
+        const $$ = (sel) => document.querySelectorAll(sel);
+
+        const productsGrid = $('#productsGrid');
+        const searchInput = $('#searchInput');
+        const searchBtn = $('#searchBtn');
+        const filterBrand = $('#filterBrand');
+        const filterCategory = $('#filterCategory');
+        const filterPrice = $('#filterPrice');
+        const priceDisplay = $('#priceDisplay');
+        const clearFilters = $('#clearFilters');
+        const cartSidebar = $('#cartSidebar');
+        const cartOverlay = $('#cartOverlay');
+        const cartItems = $('#cartItems');
+        const cartFooter = $('#cartFooter');
+        const cartTotalPrice = $('#cartTotalPrice');
+        const cartCount = $('#cartCount');
+        const closeCart = $('#closeCart');
+        const cartToggle = $('#cartToggle');
+        const checkoutBtn = $('#checkoutBtn');
+        const continueShoppingBtn = $('#continueShoppingBtn');
+        const modalOverlay = $('#modalOverlay');
+        const modalContent = $('#modalContent');
+        const authButtons = $('#authButtons');
+        const userMenu = $('#userMenu');
+        const userAvatar = $('#userAvatar');
+        const userName = $('#userName');
+        const logoutBtn = $('#logoutBtn');
+        const loginBtn = $('#loginBtn');
+        const signupBtn = $('#signupBtn');
+        const detailView = $('#productDetailView');
+        const closeDetailBtn = $('#closeDetailBtn');
+        const adminPanel = $('#adminPanel');
+        const adminPanelLink = $('#adminPanelLink');
+        const adminTabs = $('#adminTabs');
+        const adminContent = $('#adminContent');
+        const toastContainer = $('#toastContainer');
+        const homeLink = $('#homeLink');
+        const heroShopBtn = $('#heroShopBtn');
+        const offersBtn = $('#offersBtn');
+        const viewAllProducts = $('#viewAllProducts');
+        const wishlistToggle = $('#wishlistToggle');
+
+        // ============================================================
+        //  UTILITY FUNCTIONS
+        // ============================================================
+        function formatPrice(amount) {
+            return '₹' + Number(amount).toFixed(2);
+        }
+
+        function getProduct(id) {
+            return DB.products.find(p => p.id === id);
+        }
+
+        function getCartTotal() {
+            return state.cart.reduce((sum, item) => {
+                const p = getProduct(item.productId);
+                return sum + (p ? p.price * item.quantity : 0);
+            }, 0);
+        }
+
+        function getCartCount() {
+            return state.cart.reduce((sum, item) => sum + item.quantity, 0);
+        }
+
+        function isInCart(productId) {
+            return state.cart.some(item => item.productId === productId);
+        }
+
+        function isInWishlist(productId) {
+            return DB.wishlist.some(id => id === productId);
+        }
 
         function showToast(message, type = 'success') {
-            const stack = document.getElementById('toastStack');
             const el = document.createElement('div');
-            el.className = `toast ${type === 'error' ? 'error' : ''}`;
-            el.textContent = message;
-            stack.appendChild(el);
+            el.className = `toast ${type}`;
+            const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' :
+            'fa-info-circle';
+            el.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
+            toastContainer.appendChild(el);
             setTimeout(() => {
-                el.classList.add('leaving');
-                setTimeout(() => el.remove(), 250);
-            }, 3200);
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(10px)';
+                setTimeout(() => el.remove(), 300);
+            }, 3500);
         }
 
-        async function apiCall(path, body) {
-            const res = await fetch(`${API_BASE}${path}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-            const data = await res.json().catch(() => ({}));
-            if (!res.ok) throw new Error(data.error || 'Something went wrong.');
-            return data;
+        function openModal(html) {
+            modalContent.innerHTML = html;
+            modalOverlay.classList.add('active');
+            state.isModalOpen = true;
         }
 
-        let isLoggedIn = false;
-        let currentMobile = null;
-        let authToken = null;
-        let authMode = 'login'; // 'login' | 'signup' | 'forgot'
-
-        function persistSession() {
-            if (authToken) sessionStorage.setItem('pharmacare_token', authToken);
-            if (currentMobile) sessionStorage.setItem('pharmacare_mobile', currentMobile);
-        }
-        function restoreSession() {
-            const token = sessionStorage.getItem('pharmacare_token');
-            const mobile = sessionStorage.getItem('pharmacare_mobile');
-            if (token && mobile) {
-                authToken = token;
-                currentMobile = mobile;
-                isLoggedIn = true;
-            }
-        }
-        function clearSession() {
-            sessionStorage.removeItem('pharmacare_token');
-            sessionStorage.removeItem('pharmacare_mobile');
-            authToken = null;
-            currentMobile = null;
-            isLoggedIn = false;
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            state.isModalOpen = false;
         }
 
-        // ----- INDIAN PRODUCT CATALOG (INR) -----
-        const products = [
-            { id: 1, name: 'Dolo 650 Tablets', category: 'medicines', price: 32, stock: true, icon: 'fa-tablets', meta: '15 tablets · Paracetamol' },
-            { id: 2, name: 'Combiflam Tablets', category: 'medicines', price: 45, stock: true, icon: 'fa-capsules', meta: '20 tablets' },
-            { id: 3, name: 'Revital H Multivitamin', category: 'vitamins', price: 480, stock: true, icon: 'fa-vitamins', meta: '30 capsules' },
-            { id: 4, name: 'Himalaya Baby Lotion', category: 'baby', price: 165, stock: true, icon: 'fa-baby-carriage', meta: '200 ml' },
-            { id: 5, name: 'Volini Pain Relief Spray', category: 'personal', price: 195, stock: false, icon: 'fa-spray-can', meta: '55 ml' },
-            { id: 6, name: 'Omron Digital BP Monitor', category: 'devices', price: 1799, stock: true, icon: 'fa-heartbeat', meta: 'digital' },
-            { id: 7, name: 'Electral ORS Sachets', category: 'baby', price: 28, stock: true, icon: 'fa-prescription-bottle', meta: 'pack of 6' },
-            { id: 8, name: 'Vicks Vaporub', category: 'personal', price: 115, stock: true, icon: 'fa-wind', meta: '50 ml' },
-        ];
-
-        const grid = document.getElementById('productGrid');
-        const categoryItems = document.querySelectorAll('.category-item');
-        const searchInput = document.getElementById('searchInput');
-        const searchBtn = document.getElementById('searchBtn');
-        const cartBadge = document.getElementById('cartCount');
-        let currentCategory = 'all';
-        let cartItems = 3;
-
-        function formatINR(amount) {
-            return '₹' + amount.toLocaleString('en-IN');
+        function openCart() {
+            cartSidebar.classList.add('open');
+            cartOverlay.classList.add('active');
+            state.isCartOpen = true;
+            renderCart();
         }
 
-        function renderProducts(category = 'all', searchTerm = '') {
-            const term = searchTerm.toLowerCase().trim();
-            let filtered = products;
-            if (category !== 'all') filtered = filtered.filter(p => p.category === category);
-            if (term) filtered = filtered.filter(p => p.name.toLowerCase().includes(term));
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--muted);">No products found.</div>`;
+        function closeCartSidebar() {
+            cartSidebar.classList.remove('open');
+            cartOverlay.classList.remove('active');
+            state.isCartOpen = false;
+        }
+
+        // ============================================================
+        //  RENDER FUNCTIONS
+        // ============================================================
+        function renderProducts(products) {
+            const list = products || state.currentProducts;
+            if (!list || list.length === 0) {
+                productsGrid.innerHTML =
+                    `<div class="text-center" style="grid-column:1/-1;padding:40px 0;color:var(--gray-500);">
+                        <i class="fas fa-search" style="font-size:2rem;opacity:0.3;"></i>
+                        <p style="margin-top:8px;">No products found. Try adjusting your filters.</p>
+                    </div>`;
                 return;
             }
-            let html = '';
-            filtered.forEach((p, i) => {
-                const stockLabel = p.stock ? '<i class="fas fa-check-circle"></i> In stock' : '<i class="fas fa-exclamation-triangle" style="color:#b57c1a;"></i> Low stock';
-                const stockStyle = p.stock ? '' : 'style="background:#f9ece4;color:#a5643a;"';
-                html += `
-                    <div class="product-card" data-id="${p.id}" style="animation-delay:${i * 0.04}s">
-                        <div class="product-img"><i class="fas ${p.icon}"></i></div>
+            productsGrid.innerHTML = list.map(p => {
+                const inCart = isInCart(p.id);
+                const inWish = isInWishlist(p.id);
+                const stockClass = p.stock > 20 ? 'in' : p.stock > 0 ? 'low' : 'out';
+                const stockText = p.stock > 20 ? 'In Stock' : p.stock > 0 ? `Only ${p.stock} left` : 'Out of Stock';
+                const offerBadge = p.offer > 0 ? `<span class="badge-offer">${p.offer}% OFF</span>` : '';
+                const rxBadge = p.prescriptionRequired ? `<span class="badge-rx">Rx</span>` : '';
+                const finalPrice = p.offer > 0 ? p.price * (1 - p.offer / 100) : p.price;
+                return `
+                    <div class="product-card" data-id="${p.id}">
+                        ${offerBadge}${rxBadge}
+                        <div class="product-img">${p.image || '💊'}</div>
                         <div class="product-name">${p.name}</div>
-                        <div class="product-meta"><i class="fas fa-flask"></i> ${p.meta}</div>
-                        <div class="stock-badge" ${stockStyle}>${stockLabel}</div>
-                        <div class="product-price">${formatINR(p.price)}</div>
+                        <div class="product-brand">${p.brand}</div>
+                        <div class="product-price">${formatPrice(finalPrice)}${p.offer > 0 ? `<span class="old">${formatPrice(p.price)}</span>` : ''}</div>
+                        <div class="product-stock ${stockClass}">${stockText}</div>
                         <div class="card-actions">
-                            <button class="add-to-cart" data-id="${p.id}"><i class="fas fa-cart-plus"></i> Add</button>
-                            <i class="far fa-heart wishlist-icon" data-id="${p.id}"></i>
+                            <button class="btn ${inCart ? 'btn-secondary' : 'btn-primary'} add-cart-btn" data-id="${p.id}" ${p.stock === 0 ? 'disabled' : ''}>
+                                <i class="fas ${inCart ? 'fa-check' : 'fa-cart-plus'}"></i> ${inCart ? 'Added' : 'Add'}
+                            </button>
+                            <button class="wishlist-btn ${inWish ? 'active' : ''}" data-id="${p.id}">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button class="btn btn-outline btn-sm view-detail-btn" data-id="${p.id}"><i class="fas fa-eye"></i></button>
                         </div>
                     </div>
                 `;
+            }).join('');
+
+            // Attach events
+            productsGrid.querySelectorAll('.add-cart-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = parseInt(btn.dataset.id);
+                    addToCart(id);
+                });
             });
-            grid.innerHTML = html;
+            productsGrid.querySelectorAll('.wishlist-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = parseInt(btn.dataset.id);
+                    toggleWishlist(id);
+                });
+            });
+            productsGrid.querySelectorAll('.view-detail-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = parseInt(btn.dataset.id);
+                    showProductDetail(id);
+                });
+            });
+            productsGrid.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const id = parseInt(card.dataset.id);
+                    showProductDetail(id);
+                });
+            });
         }
 
-        function updateCartBadge() {
-            cartBadge.textContent = cartItems;
-            cartBadge.classList.add('bump');
-            setTimeout(() => cartBadge.classList.remove('bump'), 250);
+        function renderCart() {
+            const items = state.cart;
+            if (items.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="cart-empty">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Your cart is empty.</p>
+                        <button class="btn btn-primary btn-sm mt-8" id="continueShoppingBtn2">Continue Shopping</button>
+                    </div>
+                `;
+                cartFooter.style.display = 'none';
+                const btn2 = $('#continueShoppingBtn2');
+                if (btn2) btn2.addEventListener('click', closeCartSidebar);
+                return;
+            }
+
+            cartItems.innerHTML = items.map(item => {
+                const p = getProduct(item.productId);
+                if (!p) return '';
+                const finalPrice = p.offer > 0 ? p.price * (1 - p.offer / 100) : p.price;
+                return `
+                    <div class="cart-item" data-id="${p.id}">
+                        <div class="item-img">${p.image || '💊'}</div>
+                        <div class="item-info">
+                            <h4>${p.name}</h4>
+                            <div class="item-price">${formatPrice(finalPrice)} × ${item.quantity}</div>
+                        </div>
+                        <div class="item-qty">
+                            <button class="cart-qty-minus" data-id="${p.id}">−</button>
+                            <span>${item.quantity}</span>
+                            <button class="cart-qty-plus" data-id="${p.id}">+</button>
+                        </div>
+                        <button class="item-remove cart-remove" data-id="${p.id}"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                `;
+            }).join('');
+
+            cartFooter.style.display = 'block';
+            cartTotalPrice.textContent = formatPrice(getCartTotal());
+            cartCount.textContent = getCartCount();
+
+            // Attach events
+            cartItems.querySelectorAll('.cart-qty-minus').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.dataset.id);
+                    updateCartQty(id, -1);
+                });
+            });
+            cartItems.querySelectorAll('.cart-qty-plus').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.dataset.id);
+                    updateCartQty(id, 1);
+                });
+            });
+            cartItems.querySelectorAll('.cart-remove').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.dataset.id);
+                    removeFromCart(id);
+                });
+            });
+        }
+
+        function renderFilters() {
+            // Populate brand filter
+            const brands = [...new Set(DB.products.map(p => p.brand))];
+            filterBrand.innerHTML = `<option value="all">All Brands</option>` + brands.map(b =>
+                `<option value="${b}">${b}</option>`).join('');
+            // Populate category filter
+            const cats = [...new Set(DB.products.map(p => p.category))];
+            filterCategory.innerHTML = `<option value="all">All Categories</option>` + cats.map(c =>
+                `<option value="${c}">${c.charAt(0).toUpperCase() + c.slice(1).replace('-', ' ')}</option>`).join('');
+        }
+
+        function applyFilters() {
+            const query = state.searchQuery.toLowerCase().trim();
+            const brand = state.filterBrand;
+            const category = state.filterCategory;
+            const maxPrice = state.filterPrice;
+
+            let filtered = DB.products.filter(p => {
+                const matchQuery = !query || p.name.toLowerCase().includes(query) || p.brand.toLowerCase().includes(
+                query) || p.category.includes(query);
+                const matchBrand = brand === 'all' || p.brand === brand;
+                const matchCategory = category === 'all' || p.category === category;
+                const finalPrice = p.offer > 0 ? p.price * (1 - p.offer / 100) : p.price;
+                const matchPrice = finalPrice <= maxPrice;
+                return matchQuery && matchBrand && matchCategory && matchPrice;
+            });
+
+            state.currentProducts = filtered;
+            renderProducts(filtered);
+            updateCategoryBar();
+        }
+
+        function updateCategoryBar() {
+            $$('#categoryBar a').forEach(a => {
+                const cat = a.dataset.category;
+                a.classList.toggle('active', cat === state.currentCategory);
+            });
+        }
+
+        function showProductDetail(id) {
+            const p = getProduct(id);
+            if (!p) return;
+            state.selectedProductId = id;
+            state.detailQty = 1;
+            const finalPrice = p.offer > 0 ? p.price * (1 - p.offer / 100) : p.price;
+
+            $('#detailImg').innerHTML = p.image || '💊';
+            $('#detailName').textContent = p.name;
+            $('#detailBrand').textContent = p.brand;
+            $('#detailPrice').textContent = formatPrice(finalPrice) + (p.offer > 0 ?
+                ` <span style="text-decoration:line-through;font-size:1rem;color:var(--gray-400);">${formatPrice(p.price)}</span>` :
+                '');
+            $('#detailDosage').textContent = `Dosage: ${p.dosage}`;
+            $('#detailDesc').textContent = p.description;
+            const stockClass = p.stock > 20 ? 'in' : p.stock > 0 ? 'low' : 'out';
+            const stockText = p.stock > 20 ? 'In Stock' : p.stock > 0 ? `Only ${p.stock} left` : 'Out of Stock';
+            $('#detailStock').textContent = stockText;
+            $('#detailStock').className = `stock-status ${stockClass}`;
+            $('#detailQty').textContent = state.detailQty;
+
+            const rxSection = $('#detailPrescriptionUpload');
+            rxSection.style.display = p.prescriptionRequired ? 'block' : 'none';
+
+            // Update buttons
+            const inCart = isInCart(p.id);
+            const inWish = isInWishlist(p.id);
+            const addBtn = $('#detailAddCart');
+            addBtn.innerHTML = `<i class="fas ${inCart ? 'fa-check' : 'fa-cart-plus'}"></i> ${inCart ? 'Added' : 'Add to Cart'}`;
+            addBtn.className = `btn ${inCart ? 'btn-secondary' : 'btn-primary'}`;
+            const wishBtn = $('#detailWishlist');
+            wishBtn.innerHTML = `<i class="fas fa-heart"></i> ${inWish ? 'Remove' : 'Wishlist'}`;
+
+            detailView.classList.add('active');
+            detailView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function renderAdmin() {
+            const tab = state.adminTab;
+            let html = '';
+
+            if (tab === 'dashboard') {
+                const totalProducts = DB.products.length;
+                const totalOrders = DB.orders.length;
+                const totalRevenue = DB.orders.reduce((sum, o) => sum + o.total, 0);
+                const pendingRx = DB.prescriptions.filter(p => p.status === 'pending').length;
+                html = `
+                    <div class="admin-stats">
+                        <div class="stat-card"><div class="number">${totalProducts}</div><div class="label">Products</div></div>
+                        <div class="stat-card"><div class="number">${totalOrders}</div><div class="label">Orders</div></div>
+                        <div class="stat-card"><div class="number">${formatPrice(totalRevenue)}</div><div class="label">Revenue</div></div>
+                        <div class="stat-card"><div class="number">${pendingRx}</div><div class="label">Pending Rx</div></div>
+                    </div>
+                    <p style="color:var(--gray-500);">Welcome to the admin dashboard. Use the tabs above to manage your store.</p>
+                `;
+            } else if (tab === 'products') {
+                html = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+                        <h4 style="font-weight:600;">Product Inventory</h4>
+                        <button class="btn btn-primary btn-sm" id="adminAddProductBtn"><i class="fas fa-plus"></i> Add Product</button>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="admin-table">
+                            <thead><tr><th>ID</th><th>Name</th><th>Brand</th><th>Category</th><th>Price</th><th>Stock</th><th>Rx</th><th>Actions</th></tr></thead>
+                            <tbody>
+                                ${DB.products.map(p => `
+                                    <tr>
+                                        <td>${p.id}</td>
+                                        <td>${p.name}</td>
+                                        <td>${p.brand}</td>
+                                        <td>${p.category}</td>
+                                        <td>${formatPrice(p.price)}</td>
+                                        <td>${p.stock}</td>
+                                        <td>${p.prescriptionRequired ? '✅' : '❌'}</td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm admin-edit-product" data-id="${p.id}"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-danger btn-sm admin-delete-product" data-id="${p.id}"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } else if (tab === 'orders') {
+                if (DB.orders.length === 0) {
+                    html = `<p style="color:var(--gray-500);">No orders yet.</p>`;
+                } else {
+                    html = `
+                        <div style="overflow-x:auto;">
+                            <table class="admin-table">
+                                <thead><tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Status</th><th>Payment</th><th>Date</th><th>Actions</th></tr></thead>
+                                <tbody>
+                                    ${DB.orders.map(o => {
+                                        const user = DB.users.find(u => u.id === o.userId);
+                                        return `
+                                            <tr>
+                                                <td>#${o.id}</td>
+                                                <td>${user ? user.name : 'Unknown'}</td>
+                                                <td>${formatPrice(o.total)}</td>
+                                                <td><span class="status-badge ${o.status}">${o.status}</span></td>
+                                                <td>${o.paymentMethod}</td>
+                                                <td>${new Date(o.orderDate).toLocaleDateString()}</td>
+                                                <td>
+                                                    <select class="admin-order-status" data-id="${o.id}" style="padding:4px 8px;border-radius:6px;border:1px solid var(--gray-200);">
+                                                        <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                                        <option value="shipped" ${o.status === 'shipped' ? 'selected' : ''}>Shipped</option>
+                                                        <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                                                        <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        `;
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+            } else if (tab === 'prescriptions') {
+                if (DB.prescriptions.length === 0) {
+                    html = `<p style="color:var(--gray-500);">No prescription uploads yet.</p>`;
+                } else {
+                    html = `
+                        <div style="overflow-x:auto;">
+                            <table class="admin-table">
+                                <thead><tr><th>ID</th><th>User</th><th>Status</th><th>Uploaded</th><th>Actions</th></tr></thead>
+                                <tbody>
+                                    ${DB.prescriptions.map(rx => {
+                                        const user = DB.users.find(u => u.id === rx.userId);
+                                        return `
+                                            <tr>
+                                                <td>#${rx.id}</td>
+                                                <td>${user ? user.name : 'Unknown'}</td>
+                                                <td><span class="status-badge ${rx.status}">${rx.status}</span></td>
+                                                <td>${new Date(rx.uploadedAt).toLocaleDateString()}</td>
+                                                <td>
+                                                    ${rx.status === 'pending' ? `
+                                                        <button class="btn btn-secondary btn-sm rx-approve" data-id="${rx.id}"><i class="fas fa-check"></i> Approve</button>
+                                                        <button class="btn btn-danger btn-sm rx-reject" data-id="${rx.id}"><i class="fas fa-times"></i> Reject</button>
+                                                    ` : '—'}
+                                                    <button class="btn btn-outline btn-sm rx-view" data-id="${rx.id}"><i class="fas fa-eye"></i></button>
+                                                </td>
+                                            </tr>
+                                        `;
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+            } else if (tab === 'customers') {
+                html = `
+                    <div style="overflow-x:auto;">
+                        <table class="admin-table">
+                            <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Role</th></tr></thead>
+                            <tbody>
+                                ${DB.users.map(u => `
+                                    <tr>
+                                        <td>${u.id}</td>
+                                        <td>${u.name}</td>
+                                        <td>${u.email}</td>
+                                        <td>${u.phone || '—'}</td>
+                                        <td>${u.address || '—'}</td>
+                                        <td>${u.role}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } else if (tab === 'reports') {
+                const totalOrders = DB.orders.length;
+                const totalRevenue = DB.orders.reduce((sum, o) => sum + o.total, 0);
+                const avgOrder = totalOrders > 0 ? totalRevenue / totalOrders : 0;
+                const topProduct = DB.orders.reduce((acc, o) => {
+                    if (o.items) {
+                        o.items.forEach(item => {
+                            acc[item.productId] = (acc[item.productId] || 0) + item.quantity;
+                        });
+                    }
+                    return acc;
+                }, {});
+                let topProductName = 'N/A';
+                let topProductQty = 0;
+                for (const [pid, qty] of Object.entries(topProduct)) {
+                    if (qty > topProductQty) {
+                        const p = getProduct(parseInt(pid));
+                        if (p) { topProductName = p.name;
+                            topProductQty = qty; }
+                    }
+                }
+
+                html = `
+                    <div class="admin-stats">
+                        <div class="stat-card"><div class="number">${totalOrders}</div><div class="label">Total Orders</div></div>
+                        <div class="stat-card"><div class="number">${formatPrice(totalRevenue)}</div><div class="label">Total Revenue</div></div>
+                        <div class="stat-card"><div class="number">${formatPrice(avgOrder)}</div><div class="label">Avg Order Value</div></div>
+                        <div class="stat-card"><div class="number">${topProductName}</div><div class="label">Top Product (${topProductQty} sold)</div></div>
+                    </div>
+                    <p style="color:var(--gray-500);">Sales reports and analytics overview.</p>
+                `;
+            }
+
+            adminContent.innerHTML = html;
+
+            // Attach admin events
+            if (tab === 'products') {
+                const addBtn = $('#adminAddProductBtn');
+                if (addBtn) addBtn.addEventListener('click', () => showAddProductModal());
+
+                document.querySelectorAll('.admin-edit-product').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const id = parseInt(btn.dataset.id);
+                        showEditProductModal(id);
+                    });
+                });
+                document.querySelectorAll('.admin-delete-product').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const id = parseInt(btn.dataset.id);
+                        if (confirm('Delete this product?')) {
+                            deleteProduct(id);
+                        }
+                    });
+                });
+            }
+            if (tab === 'orders') {
+                document.querySelectorAll('.admin-order-status').forEach(sel => {
+                    sel.addEventListener('change', () => {
+                        const id = parseInt(sel.dataset.id);
+                        const status = sel.value;
+                        updateOrderStatus(id, status);
+                    });
+                });
+            }
+            if (tab === 'prescriptions') {
+                document.querySelectorAll('.rx-approve').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const id = parseInt(btn.dataset.id);
+                        updatePrescriptionStatus(id, 'approved');
+                    });
+                });
+                document.querySelectorAll('.rx-reject').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const id = parseInt(btn.dataset.id);
+                        updatePrescriptionStatus(id, 'rejected');
+                    });
+                });
+                document.querySelectorAll('.rx-view').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const id = parseInt(btn.dataset.id);
+                        const rx = DB.prescriptions.find(r => r.id === id);
+                        if (rx) {
+                            showToast(`Prescription #${id}: ${rx.imageUrl || 'No image attached'}`, 'info');
+                        }
+                    });
+                });
+            }
+        }
+
+        // ============================================================
+        //  CORE ACTIONS
+        // ============================================================
+        function addToCart(productId) {
+            const p = getProduct(productId);
+            if (!p) return;
+            if (p.stock === 0) {
+                showToast('This product is out of stock.', 'error');
+                return;
+            }
+            const existing = state.cart.find(item => item.productId === productId);
+            if (existing) {
+                if (existing.quantity < p.stock) {
+                    existing.quantity++;
+                    showToast(`Added another ${p.name} to cart.`);
+                } else {
+                    showToast('Not enough stock available.', 'error');
+                }
+            } else {
+                state.cart.push({ productId, quantity: 1 });
+                showToast(`${p.name} added to cart.`);
+            }
+            cartCount.textContent = getCartCount();
+            renderCart();
+            renderProducts(state.currentProducts);
+            if (state.selectedProductId === productId) {
+                showProductDetail(productId);
+            }
+        }
+
+        function updateCartQty(productId, delta) {
+            const item = state.cart.find(i => i.productId === productId);
+            if (!item) return;
+            const p = getProduct(productId);
+            const newQty = item.quantity + delta;
+            if (newQty <= 0) {
+                removeFromCart(productId);
+                return;
+            }
+            if (p && newQty > p.stock) {
+                showToast('Not enough stock.', 'error');
+                return;
+            }
+            item.quantity = newQty;
+            cartCount.textContent = getCartCount();
+            renderCart();
+            renderProducts(state.currentProducts);
+        }
+
+        function removeFromCart(productId) {
+            state.cart = state.cart.filter(item => item.productId !== productId);
+            cartCount.textContent = getCartCount();
+            renderCart();
+            renderProducts(state.currentProducts);
+            if (state.selectedProductId === productId) {
+                showProductDetail(productId);
+            }
+            showToast('Item removed from cart.', 'info');
+        }
+
+        function toggleWishlist(productId) {
+            const idx = DB.wishlist.indexOf(productId);
+            if (idx > -1) {
+                DB.wishlist.splice(idx, 1);
+                showToast('Removed from wishlist.', 'info');
+            } else {
+                DB.wishlist.push(productId);
+                showToast('Added to wishlist! ❤️');
+            }
+            renderProducts(state.currentProducts);
+            if (state.selectedProductId === productId) {
+                showProductDetail(productId);
+            }
+        }
+
+        function deleteProduct(id) {
+            DB.products = DB.products.filter(p => p.id !== id);
+            state.currentProducts = state.currentProducts.filter(p => p.id !== id);
+            renderProducts(state.currentProducts);
+            renderAdmin();
+            showToast('Product deleted.', 'info');
+        }
+
+        function updateOrderStatus(id, status) {
+            const order = DB.orders.find(o => o.id === id);
+            if (order) {
+                order.status = status;
+                renderAdmin();
+                showToast(`Order #${id} updated to ${status}.`);
+            }
+        }
+
+        function updatePrescriptionStatus(id, status) {
+            const rx = DB.prescriptions.find(r => r.id === id);
+            if (rx) {
+                rx.status = status;
+                rx.reviewedAt = new Date().toISOString();
+                renderAdmin();
+                showToast(`Prescription #${id} ${status}.`);
+                // Notify user
+                const user = DB.users.find(u => u.id === rx.userId);
+                if (user) {
+                    showToast(`User ${user.name} notified: Prescription ${status}.`, 'info');
+                }
+            }
+        }
+
+        function checkout() {
+            if (state.cart.length === 0) {
+                showToast('Your cart is empty.', 'error');
+                return;
+            }
+            if (!state.currentUser) {
+                showToast('Please login to checkout.', 'error');
+                openLoginModal();
+                return;
+            }
+
+            // Check for prescription items
+            const rxItems = state.cart.filter(item => {
+                const p = getProduct(item.productId);
+                return p && p.prescriptionRequired;
+            });
+
+            if (rxItems.length > 0) {
+                // Show prescription upload modal first
+                showPrescriptionUploadModal();
+                return;
+            }
+
+            showCheckoutModal();
+        }
+
+        function showCheckoutModal() {
+            const total = getCartTotal();
+            const user = state.currentUser;
+            openModal(`
+                <div class="modal-header">
+                    <h3><i class="fas fa-lock" style="color:var(--primary);"></i> Secure Checkout</h3>
+                    <button class="close-btn" id="modalCloseBtn"><i class="fas fa-times"></i></button>
+                </div>
+                <p style="color:var(--gray-500);margin-bottom:16px;">Review your order and choose a payment method.</p>
+                <div style="background:var(--gray-50);padding:12px 16px;border-radius:8px;margin-bottom:16px;">
+                    <strong>Total: ${formatPrice(total)}</strong> (${getCartCount()} items)
+                </div>
+                <div class="form-group">
+                    <label>Shipping Address</label>
+                    <textarea id="checkoutAddress" rows="3" placeholder="Enter your delivery address">${user.address || ''}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select id="checkoutPayment">
+                        <option value="Card">💳 Credit / Debit Card</option>
+                        <option value="UPI">📱 UPI</option>
+                        <option value="COD">💰 Cash on Delivery</option>
+                        <option value="NetBanking">🏦 Net Banking</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="placeOrderBtn"><i class="fas fa-check"></i> Place Order</button>
+                    <button class="btn btn-outline" id="cancelCheckoutBtn">Cancel</button>
+                </div>
+            `);
+
+            $('#modalCloseBtn').addEventListener('click', closeModal);
+            $('#cancelCheckoutBtn').addEventListener('click', closeModal);
+            $('#placeOrderBtn').addEventListener('click', () => {
+                placeOrder();
+            });
+        }
+
+        function placeOrder() {
+            const address = $('#checkoutAddress').value.trim() || state.currentUser.address || 'No address provided';
+            const paymentMethod = $('#checkoutPayment').value;
+            const total = getCartTotal();
+
+            const order = {
+                id: ++DB.orderCounter,
+                userId: state.currentUser.id,
+                items: state.cart.map(item => ({ ...item })),
+                total: total,
+                status: 'pending',
+                paymentMethod: paymentMethod,
+                shippingAddress: address,
+                orderDate: new Date().toISOString(),
+                trackingNumber: 'TRK' + Date.now().toString().slice(-8)
+            };
+
+            DB.orders.push(order);
+            // Reduce stock
+            state.cart.forEach(item => {
+                const p = getProduct(item.productId);
+                if (p) p.stock = Math.max(0, p.stock - item.quantity);
+            });
+            state.cart = [];
+            cartCount.textContent = 0;
+            renderCart();
+            renderProducts(state.currentProducts);
+            closeModal();
+            showToast(`Order placed! Order #${order.id}. Tracking: ${order.trackingNumber}`, 'success');
+
+            // Show order tracking
+            showOrderTracking(order.id);
+        }
+
+        function showOrderTracking(orderId) {
+            const order = DB.orders.find(o => o.id === orderId);
+            if (!order) return;
+            const statuses = ['pending', 'shipped', 'delivered'];
+            const currentIdx = statuses.indexOf(order.status);
+            const steps = ['Order Placed', 'Shipped', 'Delivered'];
+
+            openModal(`
+                <div class="modal-header">
+                    <h3><i class="fas fa-truck" style="color:var(--primary);"></i> Order #${order.id}</h3>
+                    <button class="close-btn" id="modalCloseBtn"><i class="fas fa-times"></i></button>
+                </div>
+                <p><strong>Status:</strong> <span class="status-badge ${order.status}">${order.status}</span></p>
+                <p><strong>Tracking:</strong> ${order.trackingNumber || 'N/A'}</p>
+                <p><strong>Total:</strong> ${formatPrice(order.total)}</p>
+                <p><strong>Payment:</strong> ${order.paymentMethod}</p>
+                <p><strong>Address:</strong> ${order.shippingAddress}</p>
+                <div class="tracking-timeline" style="margin-top:16px;">
+                    ${steps.map((s, i) => `
+                        <div class="step ${i <= currentIdx ? 'done' : ''}">
+                            <div class="dot"></div>
+                            <div>${s}</div>
+                            ${i < steps.length - 1 ? '<div class="line"></div>' : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="trackingCloseBtn">OK</button>
+                </div>
+            `);
+
+            $('#modalCloseBtn').addEventListener('click', closeModal);
+            $('#trackingCloseBtn').addEventListener('click', closeModal);
+        }
+
+        function showPrescriptionUploadModal() {
+            const rxItems = state.cart.filter(item => {
+                const p = getProduct(item.productId);
+                return p && p.prescriptionRequired;
+            });
+
+            openModal(`
+                <div class="modal-header">
+                    <h3><i class="fas fa-prescription" style="color:var(--secondary);"></i> Upload Prescription</h3>
+                    <button class="close-btn" id="modalCloseBtn"><i class="fas fa-times"></i></button>
+                </div>
+                <p style="color:var(--gray-500);margin-bottom:12px;">
+                    The following items require a prescription: <strong>${rxItems.map(i => getProduct(i.productId)?.name || '').join(', ')}</strong>
+                </p>
+                <div class="form-group">
+                    <label>Upload Prescription Image</label>
+                    <div class="file-upload" id="rxUploadArea">
+                        <i class="fas fa-cloud-upload-alt" style="font-size:2rem;color:var(--primary);"></i>
+                        <p style="margin-top:4px;">Click to upload or drag & drop</p>
+                        <input type="file" id="rxFileInput" accept="image/*" />
+                    </div>
+                    <div id="rxFileName" style="margin-top:6px;font-size:0.85rem;color:var(--gray-500);"></div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="submitRxBtn"><i class="fas fa-upload"></i> Submit for Review</button>
+                    <button class="btn btn-outline" id="cancelRxBtn">Cancel</button>
+                </div>
+            `);
+
+            let selectedFile = null;
+            const fileInput = $('#rxFileInput');
+            const uploadArea = $('#rxUploadArea');
+
+            uploadArea.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) {
+                    selectedFile = fileInput.files[0];
+                    $('#rxFileName').textContent = `📎 ${selectedFile.name}`;
+                }
+            });
+
+            $('#modalCloseBtn').addEventListener('click', closeModal);
+            $('#cancelRxBtn').addEventListener('click', closeModal);
+
+            $('#submitRxBtn').addEventListener('click', () => {
+                if (!selectedFile) {
+                    showToast('Please select a prescription image.', 'error');
+                    return;
+                }
+                // Simulate upload
+                const rx = {
+                    id: DB.prescriptions.length + 1,
+                    userId: state.currentUser.id,
+                    orderId: null,
+                    imageUrl: URL.createObjectURL(selectedFile),
+                    status: 'pending',
+                    uploadedAt: new Date().toISOString(),
+                    reviewedAt: null,
+                    reviewNotes: ''
+                };
+                DB.prescriptions.push(rx);
+                closeModal();
+                showToast('Prescription uploaded! A pharmacist will review it shortly.', 'success');
+
+                // Place order after Rx upload
+                setTimeout(() => {
+                    showCheckoutModal();
+                }, 500);
+            });
+        }
+
+        // ============================================================
+        //  AUTH
+        // ============================================================
+        function openLoginModal() {
+            openModal(`
+                <div class="modal-header">
+                    <h3><i class="fas fa-sign-in-alt" style="color:var(--primary);"></i> Login</h3>
+                    <button class="close-btn" id="modalCloseBtn"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="your@email.com" value="john@example.com" />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" value="password" />
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="loginSubmitBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+                </div>
+                <div class="auth-toggle">
+                    Don't have an account? <a id="switchToSignup">Sign Up</a>
+                </div>
+            `);
+
+            $('#modalCloseBtn').addEventListener('click', closeModal);
+            $('#loginSubmitBtn').addEventListener('click', handleLogin);
+            $('#switchToSignup').addEventListener('click', () => { closeModal();
+                openSignupModal(); });
+            // Enter key
+            document.getElementById('loginPassword').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') handleLogin();
+            });
+        }
+
+        function openSignupModal() {
+            openModal(`
+                <div class="modal-header">
+                    <h3><i class="fas fa-user-plus" style="color:var(--secondary);"></i> Sign Up</h3>
+                    <button class="close-btn" id="modalCloseBtn"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="signupName" placeholder="John Doe" />
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="signupEmail" placeholder="your@email.com" />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="signupPassword" placeholder="••••••••" />
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" id="signupPhone" placeholder="9876543210" />
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <textarea id="signupAddress" rows="2" placeholder="Your delivery address"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="signupSubmitBtn"><i class="fas fa-user-plus"></i> Create Account</button>
+                </div>
+                <div class="auth-toggle">
+                    Already have an account? <a id="switchToLogin">Login</a>
+                </div>
+            `);
+
+            $('#modalCloseBtn').addEventListener('click', closeModal);
+            $('#signupSubmitBtn').addEventListener('click', handleSignup);
+            $('#switchToLogin').addEventListener('click', () => { closeModal();
+                openLoginModal(); });
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            if (!email || !password) {
+                showToast('Please fill in all fields.', 'error');
+                return;
+            }
+            const user = DB.users.find(u => u.email === email && u.password === password);
+            if (!user) {
+                showToast('Invalid email or password.', 'error');
+                return;
+            }
+            state.currentUser = user;
+            state.isAdmin = user.role === 'admin';
+            closeModal();
+            updateAuthUI();
+            showToast(`Welcome back, ${user.name}! 👋`);
+            if (state.isAdmin) {
+                adminPanelLink.style.display = 'inline-block';
+                adminPanel.classList.add('active');
+                renderAdmin();
+                showToast('Admin panel activated.', 'info');
+            }
+            renderProducts(state.currentProducts);
+        }
+
+        function handleSignup() {
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value.trim();
+            const phone = document.getElementById('signupPhone').value.trim();
+            const address = document.getElementById('signupAddress').value.trim();
+
+            if (!name || !email || !password) {
+                showToast('Please fill in required fields.', 'error');
+                return;
+            }
+            if (DB.users.find(u => u.email === email)) {
+                showToast('Email already registered.', 'error');
+                return;
+            }
+            const newUser = {
+                id: DB.users.length + 1,
+                name,
+                email,
+                password,
+                role: 'customer',
+                address: address || '',
+                phone: phone || ''
+            };
+            DB.users.push(newUser);
+            state.currentUser = newUser;
+            closeModal();
+            updateAuthUI();
+            showToast(`Account created! Welcome ${name}! 🎉`);
+            renderProducts(state.currentProducts);
+        }
+
+        function logoutUser() {
+            state.currentUser = null;
+            state.isAdmin = false;
+            updateAuthUI();
+            adminPanelLink.style.display = 'none';
+            adminPanel.classList.remove('active');
+            detailView.classList.remove('active');
+            showToast('Logged out.');
+            renderProducts(state.currentProducts);
         }
 
         function updateAuthUI() {
-            const signInBtn = document.getElementById('signInBtn');
-            const joinBtn = document.getElementById('joinBtn');
-            if (isLoggedIn) {
-                signInBtn.innerHTML = `<i class="fas fa-user-circle"></i> ${currentMobile || 'Account'}`;
-                signInBtn.style.background = '#262626';
-                signInBtn.style.borderColor = 'var(--green)';
-                joinBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
-                joinBtn.style.background = '#a5333a';
-                joinBtn.style.color = 'white';
-            } else {
-                signInBtn.innerHTML = '<i class="fas fa-user-circle"></i> Sign in';
-                signInBtn.style.background = 'transparent';
-                signInBtn.style.borderColor = '#4a4a4a';
-                joinBtn.innerHTML = '<i class="fas fa-user-plus"></i> Join';
-                joinBtn.style.background = '';
-                joinBtn.style.color = '';
-            }
-        }
-
-        // ----- MODAL (single form, mode-driven) -----
-        const modal = document.getElementById('authModal');
-        const closeModalBtn = document.getElementById('closeModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalSub = document.getElementById('modalSub');
-        const authMobileInput = document.getElementById('authMobile');
-        const authPasswordInput = document.getElementById('authPassword');
-        const passwordLabel = document.getElementById('passwordLabel');
-        const forgotLink = document.getElementById('forgotLink');
-        const authSubmit = document.getElementById('authSubmit');
-        const switchAuthMode = document.getElementById('switchAuthMode');
-        const authSwitch = document.getElementById('authSwitch');
-
-        function showModal(mode = 'login') {
-            authMode = mode;
-            modal.classList.add('active');
-            authMobileInput.value = '';
-            authPasswordInput.value = '';
-            document.getElementById('authMessage').style.display = 'none';
-
-            if (mode === 'login') {
-                modalTitle.textContent = 'Sign in';
-                modalSub.textContent = 'Enter your mobile number & password';
-                passwordLabel.textContent = 'Password';
-                authPasswordInput.placeholder = 'Enter password';
-                forgotLink.style.display = 'block';
-                authSubmit.textContent = 'Sign in';
-                authSwitch.innerHTML = `Don't have an account? <span id="switchAuthMode">Join now</span>`;
-            } else if (mode === 'signup') {
-                modalTitle.textContent = 'Create Account';
-                modalSub.textContent = 'Set up your mobile number & password';
-                passwordLabel.textContent = 'Password';
-                authPasswordInput.placeholder = 'Set a password (min 6 chars)';
-                forgotLink.style.display = 'none';
-                authSubmit.textContent = 'Create Account';
-                authSwitch.innerHTML = `Already have an account? <span id="switchAuthMode">Sign in</span>`;
-            } else if (mode === 'forgot') {
-                modalTitle.textContent = 'Reset Password';
-                modalSub.textContent = 'Enter your mobile number & a new password';
-                passwordLabel.textContent = 'New Password';
-                authPasswordInput.placeholder = 'Set a new password (min 6 chars)';
-                forgotLink.style.display = 'none';
-                authSubmit.textContent = 'Reset Password';
-                authSwitch.innerHTML = `Remembered it? <span id="switchAuthMode">Sign in</span>`;
-            }
-            // re-bind switch link since we replaced its innerHTML
-            document.getElementById('switchAuthMode').addEventListener('click', () => {
-                showModal(authMode === 'login' ? 'signup' : 'login');
-            });
-        }
-
-        function hideModal() { modal.classList.remove('active'); }
-
-        closeModalBtn.addEventListener('click', hideModal);
-        modal.addEventListener('click', (e) => { if (e.target === modal) hideModal(); });
-        forgotLink.addEventListener('click', () => showModal('forgot'));
-
-        function setMsg(text, type = 'success') {
-            const msg = document.getElementById('authMessage');
-            msg.textContent = text;
-            msg.className = `msg ${type === 'error' ? 'error' : ''}`;
-            msg.style.display = 'block';
-        }
-
-        function withLoading(button, label, fn) {
-            return async (...args) => {
-                const original = button.innerHTML;
-                button.disabled = true;
-                button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${label}`;
-                try {
-                    await fn(...args);
-                } finally {
-                    button.disabled = false;
-                    button.innerHTML = original;
-                }
-            };
-        }
-
-        authSubmit.addEventListener('click', withLoading(authSubmit, 'Please wait…', async () => {
-            const mobile = authMobileInput.value.trim();
-            const password = authPasswordInput.value.trim();
-
-            if (!mobile || mobile.length < 8) return setMsg('Please enter a valid mobile number.', 'error');
-            if (!password) return setMsg('Please enter a password.', 'error');
-            if (authMode !== 'login' && password.length < 6) return setMsg('Password must be at least 6 characters.', 'error');
-
-            try {
-                let data;
-                if (authMode === 'login') {
-                    data = await apiCall('/auth/login', { mobile, password });
-                    showToast(`Welcome back, ${mobile}!`);
-                } else if (authMode === 'signup') {
-                    data = await apiCall('/auth/signup', { mobile, password });
-                    showToast(`Account created for ${mobile}!`);
+            if (state.currentUser) {
+                authButtons.style.display = 'none';
+                userMenu.classList.add('active');
+                userAvatar.textContent = state.currentUser.name.charAt(0).toUpperCase();
+                userName.textContent = state.currentUser.name;
+                if (state.currentUser.role === 'admin') {
+                    adminPanelLink.style.display = 'inline-block';
                 } else {
-                    data = await apiCall('/auth/forgot-password', { mobile, newPassword: password });
-                    showToast(`Password reset for ${mobile}!`);
+                    adminPanelLink.style.display = 'none';
                 }
-                authToken = data.token;
-                currentMobile = data.mobile;
-                isLoggedIn = true;
-                persistSession();
-                updateAuthUI();
-                hideModal();
-            } catch (err) {
-                setMsg(err.message, 'error');
+            } else {
+                authButtons.style.display = 'flex';
+                userMenu.classList.remove('active');
+                adminPanelLink.style.display = 'none';
+                adminPanel.classList.remove('active');
+                detailView.classList.remove('active');
             }
-        }));
+        }
 
-        document.getElementById('signInBtn').addEventListener('click', function() {
-            if (isLoggedIn) {
-                showToast(`Logged in as ${currentMobile}`);
-                return;
+        // ============================================================
+        //  ADMIN PRODUCT MODALS
+        // ============================================================
+        function showAddProductModal() {
+            openModal(`
+                <div class="modal-header">
+                    <h3><i class="fas fa-plus" style="color:var(--primary);"></i> Add Product</h3>
+                    <button class="close-btn" id="modalCloseBtn"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="form-group"><label>Name</label><input type="text" id="apName" placeholder="Product name" /></div>
+                <div class="form-group"><label>Brand</label><input type="text" id="apBrand" placeholder="Brand" /></div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="apCategory">
+                        <option value="medicines">Medicines</option>
+                        <option value="vitamins">Vitamins</option>
+                        <option value="personal-care">Personal Care</option>
+                        <option value="baby-care">Baby Care</option>
+                        <option value="medical-devices">Medical Devices</option>
+                        <option value="indian-rupees">Indian Meds</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Price (₹)</label><input type="number" id="apPrice" placeholder="99" /></div>
+                <div class="form-group"><label>Dosage</label><input type="text" id="apDosage" placeholder="e.g. 500mg" /></div>
+                <div class="form-group"><label>Stock</label><input type="number" id="apStock" placeholder="100" /></div>
+                <div class="form-group"><label>Description</label><textarea id="apDesc" rows="2" placeholder="Product description"></textarea></div>
+                <div class="form-group"><label>Image Emoji</label><input type="text" id="apImage" placeholder="💊" maxlength="4" /></div>
+                <div class="form-group">
+                    <label><input type="checkbox" id="apRx" /> Prescription Required</label>
+                </div>
+                <div class="form-group"><label>Offer %</label><input type="number" id="apOffer" placeholder="0" value="0" /></div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="apSubmitBtn"><i class="fas fa-save"></i> Add Product</button>
+                    <button class="btn btn-outline" id="apCancelBtn">Cancel</button>
+                </div>
+            `);
+
+            $('#modalCloseBtn').addEventListener('click', closeModal);
+            $('#apCancelBtn').addEventListener('click', closeModal);
+            $('#apSubmitBtn').addEventListener('click', () => {
+                const name = $('#apName').value.trim();
+                const brand = $('#apBrand').value.trim();
+                const category = $('#apCategory').value;
+                const price = parseFloat($('#apPrice').value);
+                const dosage = $('#apDosage').value.trim();
+                const stock = parseInt($('#apStock').value) || 0;
+                const description = $('#apDesc').value.trim();
+                const image = $('#apImage').value.trim() || '💊';
+                const rx = $('#apRx').checked;
+                const offer = parseFloat($('#apOffer').value) || 0;
+
+                if (!name || !brand || !price || price <= 0) {
+                    showToast('Please fill in required fields.', 'error');
+                    return;
+                }
+                const newProduct = {
+                    id: DB.products.length + 1,
+                    name,
+                    category,
+                    brand,
+                    price,
+                    dosage: dosage || 'N/A',
+                    stock,
+                    description: description || 'No description.',
+                    image,
+                    prescriptionRequired: rx,
+                    offer
+                };
+                DB.products.push(newProduct);
+                closeModal();
+                renderAdmin();
+                applyFilters();
+                showToast(`Product "${name}" added!`);
+            });
+        }
+
+        function showEditProductModal(id) {
+            const p = getProduct(id);
+            if (!p) return;
+            openModal(`
+                <div class="modal-header">
+                    <h3><i class="fas fa-edit" style="color:var(--primary);"></i> Edit Product</h3>
+                    <button class="close-btn" id="modalCloseBtn"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="form-group"><label>Name</label><input type="text" id="epName" value="${p.name}" /></div>
+                <div class="form-group"><label>Brand</label><input type="text" id="epBrand" value="${p.brand}" /></div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="epCategory">
+                        ${['medicines','vitamins','personal-care','baby-care','medical-devices','indian-rupees'].map(c => `<option value="${c}" ${c === p.category ? 'selected' : ''}>${c.charAt(0).toUpperCase() + c.slice(1).replace('-',' ')}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="form-group"><label>Price (₹)</label><input type="number" id="epPrice" value="${p.price}" /></div>
+                <div class="form-group"><label>Dosage</label><input type="text" id="epDosage" value="${p.dosage}" /></div>
+                <div class="form-group"><label>Stock</label><input type="number" id="epStock" value="${p.stock}" /></div>
+                <div class="form-group"><label>Description</label><textarea id="epDesc" rows="2">${p.description}</textarea></div>
+                <div class="form-group"><label>Image Emoji</label><input type="text" id="epImage" value="${p.image || '💊'}" maxlength="4" /></div>
+                <div class="form-group">
+                    <label><input type="checkbox" id="epRx" ${p.prescriptionRequired ? 'checked' : ''} /> Prescription Required</label>
+                </div>
+                <div class="form-group"><label>Offer %</label><input type="number" id="epOffer" value="${p.offer || 0}" /></div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="epSubmitBtn"><i class="fas fa-save"></i> Update Product</button>
+                    <button class="btn btn-outline" id="epCancelBtn">Cancel</button>
+                </div>
+            `);
+
+            $('#modalCloseBtn').addEventListener('click', closeModal);
+            $('#epCancelBtn').addEventListener('click', closeModal);
+            $('#epSubmitBtn').addEventListener('click', () => {
+                const name = $('#epName').value.trim();
+                const brand = $('#epBrand').value.trim();
+                const category = $('#epCategory').value;
+                const price = parseFloat($('#epPrice').value);
+                const dosage = $('#epDosage').value.trim();
+                const stock = parseInt($('#epStock').value) || 0;
+                const description = $('#epDesc').value.trim();
+                const image = $('#epImage').value.trim() || '💊';
+                const rx = $('#epRx').checked;
+                const offer = parseFloat($('#epOffer').value) || 0;
+
+                if (!name || !brand || !price || price <= 0) {
+                    showToast('Please fill in required fields.', 'error');
+                    return;
+                }
+                const idx = DB.products.findIndex(prod => prod.id === id);
+                if (idx > -1) {
+                    DB.products[idx] = { ...DB.products[idx], name, brand, category, price, dosage, stock, description,
+                        image, prescriptionRequired: rx, offer };
+                    closeModal();
+                    renderAdmin();
+                    applyFilters();
+                    showToast(`Product "${name}" updated!`);
+                }
+            });
+        }
+
+        // ============================================================
+        //  EVENT LISTENERS
+        // ============================================================
+
+        // Search
+        searchBtn.addEventListener('click', () => {
+            state.searchQuery = searchInput.value;
+            applyFilters();
+        });
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                state.searchQuery = searchInput.value;
+                applyFilters();
             }
-            showModal('login');
         });
 
-        document.getElementById('joinBtn').addEventListener('click', function() {
-            if (isLoggedIn) {
-                clearSession();
-                updateAuthUI();
-                showToast('Logged out successfully.');
-                return;
-            }
-            showModal('signup');
-        });
-
-        // ----- OTHER INTERACTIONS -----
-        categoryItems.forEach(item => {
-            item.addEventListener('click', function() {
-                categoryItems.forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
-                currentCategory = this.dataset.category;
-                renderProducts(currentCategory, searchInput.value);
+        // Category bar
+        $$('#categoryBar a').forEach(a => {
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                const cat = a.dataset.category;
+                state.currentCategory = cat;
+                if (cat === 'admin') return;
+                state.filterCategory = cat === 'all' ? 'all' : cat;
+                filterCategory.value = state.filterCategory;
+                applyFilters();
             });
         });
 
-        function performSearch() { renderProducts(currentCategory, searchInput.value); }
-        searchBtn.addEventListener('click', performSearch);
-        searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') performSearch(); });
-
-        grid.addEventListener('click', function(e) {
-            const target = e.target.closest('.add-to-cart');
-            if (target) {
-                e.preventDefault();
-                cartItems++;
-                updateCartBadge();
-                const original = target.innerHTML;
-                target.innerHTML = '<i class="fas fa-check"></i> Added';
-                target.style.background = '#5da62c';
-                setTimeout(() => {
-                    target.innerHTML = original;
-                    target.style.background = '';
-                }, 1200);
-            }
+        // Filters
+        filterBrand.addEventListener('change', () => {
+            state.filterBrand = filterBrand.value;
+            applyFilters();
         });
-
-        grid.addEventListener('click', function(e) {
-            const heart = e.target.closest('.wishlist-icon');
-            if (heart) {
-                e.preventDefault();
-                heart.classList.toggle('far');
-                heart.classList.toggle('fas');
-                heart.classList.add('pop');
-                heart.style.color = heart.classList.contains('fas') ? '#a5333a' : '';
-                setTimeout(() => heart.classList.remove('pop'), 250);
-            }
+        filterCategory.addEventListener('change', () => {
+            state.filterCategory = filterCategory.value;
+            state.currentCategory = filterCategory.value;
+            updateCategoryBar();
+            applyFilters();
         });
-
-        document.getElementById('prescriptionBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            showToast('Prescription upload dialog (simulated). Pharmacist review will be notified.');
+        filterPrice.addEventListener('input', () => {
+            state.filterPrice = parseInt(filterPrice.value);
+            priceDisplay.textContent = '₹' + state.filterPrice;
+            applyFilters();
         });
-
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                showToast(`Navigation: "${this.innerText.trim()}" (demo)`);
-            });
-        });
-
-        document.getElementById('seeAllLink').addEventListener('click', function() {
-            categoryItems.forEach(c => c.classList.remove('active'));
-            document.querySelector('.category-item[data-category="all"]')?.classList.add('active');
-            currentCategory = 'all';
+        clearFilters.addEventListener('click', () => {
+            state.filterBrand = 'all';
+            state.filterCategory = 'all';
+            state.filterPrice = 5000;
+            state.searchQuery = '';
             searchInput.value = '';
-            renderProducts('all', '');
+            filterBrand.value = 'all';
+            filterCategory.value = 'all';
+            filterPrice.value = 5000;
+            priceDisplay.textContent = '₹5000';
+            state.currentCategory = 'all';
+            updateCategoryBar();
+            applyFilters();
+            showToast('Filters cleared.', 'info');
         });
 
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('.navbar');
-            nav.style.boxShadow = window.scrollY > 10
-                ? '0 12px 26px rgba(0, 0, 0, 0.28)'
-                : '0 8px 20px rgba(0, 0, 0, 0.18)';
+        // Cart
+        cartToggle.addEventListener('click', () => {
+            if (state.isCartOpen) closeCartSidebar();
+            else openCart();
+        });
+        cartOverlay.addEventListener('click', closeCartSidebar);
+        closeCart.addEventListener('click', closeCartSidebar);
+        continueShoppingBtn.addEventListener('click', closeCartSidebar);
+
+        // Checkout
+        checkoutBtn.addEventListener('click', checkout);
+
+        // Auth
+        loginBtn.addEventListener('click', openLoginModal);
+        signupBtn.addEventListener('click', openSignupModal);
+        logoutBtn.addEventListener('click', logoutUser);
+
+        // Home link
+        homeLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            detailView.classList.remove('active');
+            adminPanel.classList.remove('active');
+            state.currentCategory = 'all';
+            state.filterCategory = 'all';
+            state.filterBrand = 'all';
+            state.searchQuery = '';
+            searchInput.value = '';
+            filterBrand.value = 'all';
+            filterCategory.value = 'all';
+            filterPrice.value = 5000;
+            priceDisplay.textContent = '₹5000';
+            updateCategoryBar();
+            applyFilters();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // ----- INIT -----
-        restoreSession();
-        renderProducts('all', '');
-        updateCartBadge();
-        updateAuthUI();
-        // Bind the initial switch-link (subsequent modes rebind inside showModal)
-        document.getElementById('switchAuthMode').addEventListener('click', () => {
-            showModal(authMode === 'login' ? 'signup' : 'login');
+        // Hero shop button
+        heroShopBtn.addEventListener('click', () => {
+            document.querySelector('.products-grid').scrollIntoView({ behavior: 'smooth' });
         });
-    })();
-</script>
+
+        // Offers button
+        offersBtn.addEventListener('click', () => {
+            const offerProducts = DB.products.filter(p => p.offer > 0);
+            if (offerProducts.length > 0) {
+                state.currentProducts = offerProducts;
+                renderProducts(offerProducts);
+                showToast(`Showing ${offerProducts.length} products on offer!`);
+            } else {
+                showToast('No offers available right now.', 'info');
+            }
+        });
+
+        // View all products
+        viewAllProducts.addEventListener('click', (e) => {
+            e.preventDefault();
+            state.filterCategory = 'all';
+            state.filterBrand = 'all';
+            state.searchQuery = '';
+            searchInput.value = '';
+            filterBrand.value = 'all';
+            filterCategory.value = 'all';
+            state.currentCategory = 'all';
+            updateCategoryBar();
+            applyFilters();
+            document.querySelector('.products-grid').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Admin panel link
+        adminPanelLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!state.currentUser || state.currentUser.role !== 'admin') {
+                showToast('Admin access required.', 'error');
+                return;
+            }
+            detailView.classList.remove('active');
+            adminPanel.classList.toggle('active');
+            if (adminPanel.classList.contains('active')) {
+                renderAdmin();
+                window.scrollTo({ top: adminPanel.offsetTop - 100, behavior: 'smooth' });
+            }
+        });
+
+        // Admin tabs
+        adminTabs.addEventListener('click', (e) => {
+            const btn = e.target.closest('button');
+            if (!btn) return;
+            const tab = btn.dataset.tab;
+            if (!tab) return;
+            state.adminTab = tab;
+            adminTabs.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderAdmin();
+        });
+
+        // Detail view actions
+        closeDetailBtn.addEventListener('click', () => {
+            detailView.classList.remove('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        $('#detailQtyMinus').addEventListener('click', () => {
+            if (state.detailQty > 1) {
+                state.detailQty--;
+                $('#detailQty').textContent = state.detailQty;
+            }
+        });
+        $('#detailQtyPlus').addEventListener('click', () => {
+            const p = getProduct(state.selectedProductId);
+            if (p && state.detailQty < p.stock) {
+                state.detailQty++;
+                $('#detailQty').textContent = state.detailQty;
+            } else {
+                showToast('Not enough stock.', 'error');
+            }
+        });
+
+        $('#detailAddCart').addEventListener('click', () => {
+            if (!state.selectedProductId) return;
+            const p = getProduct(state.selectedProductId);
+            if (!p) return;
+            const qty = state.detailQty;
+            // Add qty times
+            for (let i = 0; i < qty; i++) {
+                addToCart(p.id);
+            }
+            state.detailQty = 1;
+            $('#detailQty').textContent = 1;
+        });
+
+        $('#detailWishlist').addEventListener('click', () => {
+            if (!state.selectedProductId) return;
+            toggleWishlist(state.selectedProductId);
+        });
+
+        $('#detailBuyNow').addEventListener('click', () => {
+            if (!state.selectedProductId) return;
+            if (!state.currentUser) {
+                showToast('Please login first.', 'error');
+                openLoginModal();
+                return;
+            }
+            const p = getProduct(state.selectedProductId);
+            if (!p) return;
+            // Add to cart and checkout
+            if (!isInCart(p.id)) {
+                addToCart(p.id);
+            }
+            openCart();
+            setTimeout(() => checkout(), 300);
+        });
+
+        $('#uploadPrescriptionBtn').addEventListener('click', () => {
+            if (!state.currentUser) {
+                showToast('Please login to upload prescription.', 'error');
+                openLoginModal();
+                return;
+            }
+            showPrescriptionUploadModal();
+        });
+
+        // Wishlist toggle button (nav)
+        wishlistToggle.addEventListener('click', () => {
+            if (DB.wishlist.length === 0) {
+                showToast('Your wishlist is empty.', 'info');
+                return;
+            }
+            const wishProducts = DB.products.filter(p => DB.wishlist.includes(p.id));
+            state.currentProducts = wishProducts;
+            renderProducts(wishProducts);
+            showToast(`Showing ${wishProducts.length} wishlist items. ❤️`);
+        });
+
+        // Close modal overlay click
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        // ============================================================
+        //  INIT
+        // ============================================================
+        function init() {
+            renderFilters();
+            applyFilters();
+            renderCart();
+            updateAuthUI();
+
+            // Set default user for demo (optional)
+            // Uncomment to auto-login as demo user:
+            // const demoUser = DB.users.find(u => u.email === 'john@example.com');
+            // if (demoUser) { state.currentUser = demoUser; updateAuthUI(); showToast('Logged in as demo user.'); }
+
+            console.log('🏥 MediStore initialized!');
+            console.log('📦 Products:', DB.products.length);
+            console.log('👥 Users:', DB.users.length);
+            console.log('🔑 Demo: john@example.com / password');
+            console.log('👨‍💼 Admin: admin@medistore.com / admin123');
+        }
+
+        init();
+    </script>
+
 </body>
 </html>
